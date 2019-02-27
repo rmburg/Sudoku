@@ -117,17 +117,71 @@ namespace Sudoku
             return gen.Generate();
         }
 
-        public Grid GeneratePuzzle(Grid solution, Difficulty difficulty)
+        public static Grid GeneratePuzzle(Grid solution, Difficulty difficulty)
         {
-            return new Grid(9); // TODO
+            Grid puzzle;
+            Random rng = new Random();
+            Solver solver = new Solver();
+            int removedCells = 0;
+            while (true)
+            {
+                puzzle = solution.Clone();
+                removedCells = 0;
+                while (removedCells <= 81 - (int)difficulty)
+                {
+                    int x = rng.Next(1, 10);
+                    int y = rng.Next(1, 10);
+                    if (puzzle.Get(x, y) != 0)
+                    {
+                        puzzle.Set(x, y, 0);
+                        removedCells++;
+                    }
+                }
+                Sudoku s = new Sudoku(puzzle.Clone());
+                s.Solve();
+                if (s.possible_solutions.Count == 1)
+                {
+                    return puzzle;
+                }
+            }
         }
-        
+
         public void Solve()
         {
             Solver solver = new Solver();
             possible_solutions = solver.Solve(this);
         }
-        
+
+        public static Grid ParseGrid(String input)
+        {
+            input = input.Replace(" ", "");
+            List<char[]> CharArrs = new List<char[]>();
+            List<int[]> tempgrid = new List<int[]>();
+            if (input.Length != 81 + 8)
+            {
+                throw new ArgumentException("invalid string size");
+            }
+            string[] split_string = input.Split(',');
+            if (split_string.Count() != 9)
+            {
+                throw new ArgumentException("not 9 substrings");
+            }
+            foreach (string str in split_string)
+            {
+                CharArrs.Add(str.ToCharArray());
+            }
+            foreach (char[] item in CharArrs)
+            {
+                List<int> temp = new List<int>();
+                foreach (char item2 in item)
+                {
+                    temp.Add(int.Parse("" + item2));
+                }
+                tempgrid.Add(temp.ToArray());
+            }
+            return new Grid(tempgrid.ToArray(), 9);
+        }
+
         public static Sudoku LoadRandomSudoku(Difficulty difficulty)
         {
             return new Sudoku(exampleGridEmpty);
@@ -318,6 +372,21 @@ namespace Sudoku
                 }
             }
             return new Coords(-1, -1);
+        }
+
+        public override string ToString()
+        {
+            string s = "";
+            foreach (int[] subgrid in internal_grid)
+            {
+                foreach (int number in subgrid)
+                {
+                    s += number.ToString();
+                }
+                s += ",";
+            }
+            s = s.Remove(89);
+            return s;
         }
     }
     public class Solver

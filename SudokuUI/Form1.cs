@@ -11,11 +11,20 @@ using Sudoku;
 
 namespace SudokuUI
 {
+    public struct Tag
+    {
+        public bool premade;
+        public Tag(bool premade)
+        {
+            this.premade = premade;
+        }
+    }
+
     public partial class Form1 : Form
     {
         Coords currentCell = new Coords(0, 0);
-        Font font_cell_default = new Font("Verdana", 9f);
-        Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
+        static Font font_cell_default = new Font("Verdana", 9f);
+        static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
         public static DataGridViewCellStyle style_premade = new DataGridViewCellStyle();
         
 
@@ -37,7 +46,6 @@ namespace SudokuUI
             dataGridView1.Rows.Add();
             dataGridView1.RowTemplate.Height = 30;
             
-            textBox1.Text = "test";
             //add event handlers to buttons
             button1.Click += new EventHandler(ButtonClick);
             button2.Click += new EventHandler(ButtonClick);
@@ -68,6 +76,14 @@ namespace SudokuUI
                     }
                 }
             }
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    dataGridView1.Rows[i].Cells[j].Tag = new Tag(false);
+                }
+            }
         }
 
         private void SelectionUpdate(object sender, EventArgs e)
@@ -76,8 +92,7 @@ namespace SudokuUI
             Coords pos = new Coords();
             pos.x = datagrid.CurrentCell.ColumnIndex;
             pos.y = datagrid.CurrentCell.RowIndex;
-
-            textBox1.Text = String.Format("{0}, {1}",pos.x, pos.y);
+            
             currentCell = pos;
         }
 
@@ -94,35 +109,45 @@ namespace SudokuUI
         private void ButtonClick(object sender, EventArgs e)
         {
             string btnText = ((Button)sender).Text;
-            textBox1.Text = btnText;
-            SetCell(currentCell, int.Parse(btnText));
+            Tag tag = (Tag)(GetCell(currentCell).Tag);
+            if (!tag.premade)
+            {
+                SetCell(currentCell, int.Parse(btnText));
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            textBox1.Text = String.Format("{0}, {1}", e.ColumnIndex, e.RowIndex);
             currentCell.x = e.ColumnIndex;
             currentCell.y = e.RowIndex;
         }
 
         private void GenerateEvent(object sender, EventArgs e)
         {
-            Grid puzzle = Sudoku.Sudoku.GenerateRandomSolution();
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if (puzzle.Get(new Coords(i+1, j+1)) != 0)
-                    {
-                        SetCell(new Coords(i, j), puzzle.Get(new Coords(i + 1, j + 1)));
-                        GetCell(new Coords(i, j)).Style = style_premade;
-                    }
-                }
-            }
+            //Grid puzzle = Sudoku.Sudoku.GeneratePuzzle(Sudoku.Sudoku.GenerateRandomSolution(), Sudoku.Sudoku.Difficulty.medium);
+            Grid puzzle = Sudoku.Sudoku.exampleGrid4_hard;
+            SetGrid(puzzle);
         }
 
         private void SolveEvent(object sender, EventArgs e)
         {
+
+        }
+
+        void SetGrid(Grid grid)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (grid.Get(new Coords(j + 1, i + 1)) != 0)
+                    {
+                        SetCell(new Coords(i, j), grid.Get(new Coords(j + 1, i + 1)));
+                        GetCell(new Coords(j, i)).Style.Font = font_cell_bold;
+                        GetCell(new Coords(j, i)).Tag = new Tag(true);
+                    }
+                }
+            }
 
         }
     }
