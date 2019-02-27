@@ -1,0 +1,10 @@
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\SudokuUI.exe.config
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\SudokuUI.exe
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\SudokuUI.pdb
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csprojResolveAssemblyReference.cache
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.Form1.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.Properties.Resources.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.GenerateResource.cache
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.CoreCompileInputs.cache
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.exe
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.pdb
