@@ -8,3 +8,4 @@ C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.Generat
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.CoreCompileInputs.cache
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.exe
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.pdb
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.save_load_dialog.resources

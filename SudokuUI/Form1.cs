@@ -26,7 +26,7 @@ namespace SudokuUI
         static Font font_cell_default = new Font("Verdana", 9f);
         static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
         public static DataGridViewCellStyle style_premade = new DataGridViewCellStyle();
-        
+        public Grid viewGrid = new Grid(9);
 
         public Form1()
         {
@@ -35,16 +35,16 @@ namespace SudokuUI
             style_premade.Font = font_cell_bold;
 
             //add table rows
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.Rows.Add();
-            dataGridView1.RowTemplate.Height = 30;
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.Rows.Add();
+            ui_grid.RowTemplate.Height = 30;
             
             //add event handlers to buttons
             button1.Click += new EventHandler(ButtonClick);
@@ -56,23 +56,26 @@ namespace SudokuUI
             button7.Click += new EventHandler(ButtonClick);
             button8.Click += new EventHandler(ButtonClick);
             button9.Click += new EventHandler(ButtonClick);
+            buttonRemove.Click += new EventHandler(ButtonClick);
 
             buttonGenerate.Click += new EventHandler(GenerateEvent);
             buttonSolve.Click += new EventHandler(SolveEvent);
 
-            dataGridView1.SelectionChanged += new EventHandler(SelectionUpdate);
+            ui_grid.SelectionChanged += new EventHandler(SelectionUpdate);
+            ui_grid.KeyPress += new KeyPressEventHandler(KeyPressEvent);
+            ui_grid.PreviewKeyDown += new PreviewKeyDownEventHandler(KeyPressPreview);
 
             //apply color to cells
-            dataGridView1.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView1.GridColor = Color.Black;
-            dataGridView1.Font = font_cell_default;
+            ui_grid.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            ui_grid.GridColor = Color.Black;
+            ui_grid.Font = font_cell_default;
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
                     if ((i < 3 || i > 5) ^ (j < 3 || j > 5)) // 3x3 checkerboard pattern
                     {
-                        dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.DarkGray;
+                        ui_grid.Rows[i].Cells[j].Style.BackColor = Color.DarkGray;
                     }
                 }
             }
@@ -81,9 +84,14 @@ namespace SudokuUI
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    dataGridView1.Rows[i].Cells[j].Tag = new Tag(false);
+                    ui_grid.Rows[i].Cells[j].Tag = new Tag(false);
                 }
             }
+        }
+
+        private void UpdateGrid()
+        {
+            SetPremadeGrid(viewGrid);
         }
 
         private void SelectionUpdate(object sender, EventArgs e)
@@ -98,21 +106,30 @@ namespace SudokuUI
 
         public void SetCell(Coords coords, int value)
         {
-            dataGridView1.Rows[coords.y].Cells[coords.x].Value = value;
+            ui_grid.Rows[coords.y].Cells[coords.x].Value = value;
         }
 
         public DataGridViewCell GetCell(Coords coords)
         {
-            return (DataGridViewCell)dataGridView1.Rows[coords.x].Cells[coords.y];
+            return ui_grid.Rows[coords.x].Cells[coords.y];
         }
 
         private void ButtonClick(object sender, EventArgs e)
         {
-            string btnText = ((Button)sender).Text;
             Tag tag = (Tag)(GetCell(currentCell).Tag);
+
+            if (sender == buttonRemove)
+            {
+                if (!tag.premade)
+                {
+                    ui_grid.CurrentCell.Value = null;
+                    return;
+                }
+            }
+            string btnText = ((Button)sender).Text;
             if (!tag.premade)
             {
-                SetCell(currentCell, int.Parse(btnText));
+                ui_grid.CurrentCell.Value = int.Parse(btnText);
             }
         }
 
@@ -125,16 +142,17 @@ namespace SudokuUI
         private void GenerateEvent(object sender, EventArgs e)
         {
             //Grid puzzle = Sudoku.Sudoku.GeneratePuzzle(Sudoku.Sudoku.GenerateRandomSolution(), Sudoku.Sudoku.Difficulty.medium);
-            Grid puzzle = Sudoku.Sudoku.exampleGrid4_hard;
-            SetGrid(puzzle);
+            Grid puzzle = Sudoku.Sudoku.exampleGrid3;
+            SetPremadeGrid(puzzle);
         }
 
         private void SolveEvent(object sender, EventArgs e)
         {
-
+            Grid puzzle = Sudoku.Sudoku.exampleGrid4_hard;
+            SetPremadeGrid(puzzle);
         }
 
-        void SetGrid(Grid grid)
+        void SetPremadeGrid(Grid grid)
         {
             for (int i = 0; i < 9; i++)
             {
@@ -144,11 +162,56 @@ namespace SudokuUI
                     {
                         SetCell(new Coords(i, j), grid.Get(new Coords(j + 1, i + 1)));
                         GetCell(new Coords(j, i)).Style.Font = font_cell_bold;
-                        GetCell(new Coords(j, i)).Tag = new Tag(true);
+                        GetCell(new Coords(i, j)).Tag = new Tag(true);
+                    }
+                    else
+                    {
+                        GetCell(new Coords(j, i)).Value = null;
+                        GetCell(new Coords(j, i)).Style.Font = font_cell_default;
+                        GetCell(new Coords(i, j)).Tag = new Tag(false);
                     }
                 }
             }
+        }
 
+
+        private void KeyPressEvent(object sender, KeyPressEventArgs e)
+        {
+            char[] allowed = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', (char)Keys.Back};
+            if (allowed.Contains(e.KeyChar))
+            {
+                MessageBox.Show("" + e.KeyChar);
+            }
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                MessageBox.Show("enter");
+                e.Handled = true;
+            }
+        }
+
+        private void KeyPressPreview(object sender, PreviewKeyDownEventArgs e)
+        {
+            char[] allowed = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', };
+            if (allowed.Contains((char)e.KeyCode))
+            {
+                MessageBox.Show("" + (char)e.KeyCode);
+            }
+            if (((char)e.KeyCode) == (char)Keys.Enter)
+            {
+                MessageBox.Show("enter2");
+            }
+        }
+    }
+
+    public class UIgrid : DataGridView
+    {
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                e.Handled = true;
+            }
+            base.OnKeyDown(e);
         }
     }
 }
