@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ui_grid = new System.Windows.Forms.DataGridView();
+            this.ui_grid = new SudokuUI.UIgrid();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,10 +42,12 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonSaveLoad = new System.Windows.Forms.Button();
             this.buttonSolve = new System.Windows.Forms.Button();
             this.buttonGenerate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonPanel = new System.Windows.Forms.Panel();
+            this.buttonRemove = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -55,7 +57,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.buttonRemove = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.buttonReset = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -87,6 +90,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.buttonSaveLoad);
+            this.splitContainer1.Panel2.Controls.Add(this.buttonReset);
             this.splitContainer1.Panel2.Controls.Add(this.buttonSolve);
             this.splitContainer1.Panel2.Controls.Add(this.buttonGenerate);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
@@ -228,20 +233,29 @@
             this.Column9.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column9.Width = 30;
             // 
+            // buttonSaveLoad
+            // 
+            this.buttonSaveLoad.Location = new System.Drawing.Point(196, 125);
+            this.buttonSaveLoad.Name = "buttonSaveLoad";
+            this.buttonSaveLoad.Size = new System.Drawing.Size(90, 30);
+            this.buttonSaveLoad.TabIndex = 6;
+            this.buttonSaveLoad.Text = "Save / Load";
+            this.buttonSaveLoad.UseVisualStyleBackColor = true;
+            // 
             // buttonSolve
             // 
-            this.buttonSolve.Location = new System.Drawing.Point(165, 58);
+            this.buttonSolve.Location = new System.Drawing.Point(196, 17);
             this.buttonSolve.Name = "buttonSolve";
-            this.buttonSolve.Size = new System.Drawing.Size(75, 23);
+            this.buttonSolve.Size = new System.Drawing.Size(90, 30);
             this.buttonSolve.TabIndex = 5;
             this.buttonSolve.Text = "Solve";
             this.buttonSolve.UseVisualStyleBackColor = true;
             // 
             // buttonGenerate
             // 
-            this.buttonGenerate.Location = new System.Drawing.Point(165, 87);
+            this.buttonGenerate.Location = new System.Drawing.Point(195, 89);
             this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(75, 23);
+            this.buttonGenerate.Size = new System.Drawing.Size(90, 30);
             this.buttonGenerate.TabIndex = 4;
             this.buttonGenerate.Text = "Generate";
             this.buttonGenerate.UseVisualStyleBackColor = true;
@@ -272,6 +286,15 @@
             this.buttonPanel.Name = "buttonPanel";
             this.buttonPanel.Size = new System.Drawing.Size(100, 130);
             this.buttonPanel.TabIndex = 1;
+            // 
+            // buttonRemove
+            // 
+            this.buttonRemove.Location = new System.Drawing.Point(35, 91);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(30, 30);
+            this.buttonRemove.TabIndex = 9;
+            this.buttonRemove.Text = "X";
+            this.buttonRemove.UseVisualStyleBackColor = true;
             // 
             // button9
             // 
@@ -354,14 +377,14 @@
             this.button1.Text = "1";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // buttonRemove
+            // buttonReset
             // 
-            this.buttonRemove.Location = new System.Drawing.Point(35, 91);
-            this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(30, 30);
-            this.buttonRemove.TabIndex = 9;
-            this.buttonRemove.Text = "X";
-            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonReset.Location = new System.Drawing.Point(195, 53);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(90, 30);
+            this.buttonReset.TabIndex = 5;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -390,7 +413,7 @@
         #endregion
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        public System.Windows.Forms.DataGridView ui_grid;
+        public SudokuUI.UIgrid ui_grid;
         public System.Windows.Forms.Panel buttonPanel;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
@@ -414,6 +437,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.Button buttonRemove;
+        private System.Windows.Forms.Button buttonSaveLoad;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button buttonReset;
     }
 }
 

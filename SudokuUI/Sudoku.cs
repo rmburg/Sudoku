@@ -5,7 +5,11 @@ using static Sudoku.Lib;
 
 namespace Sudoku
 {
+#pragma warning disable CS0660 // Typ definiert Operator == oder Operator !=, überschreibt jedoch nicht Object.Equals(Objekt o)
+#pragma warning disable CS0661 // Typ definiert Operator == oder Operator !=, überschreibt jedoch nicht Object.GetHashCode()
     public struct Coords
+#pragma warning restore CS0661 // Typ definiert Operator == oder Operator !=, überschreibt jedoch nicht Object.GetHashCode()
+#pragma warning restore CS0660 // Typ definiert Operator == oder Operator !=, überschreibt jedoch nicht Object.Equals(Objekt o)
     {
         public int x;
         public int y;
@@ -129,8 +133,8 @@ namespace Sudoku
                 removedCells = 0;
                 while (removedCells <= 81 - (int)difficulty)
                 {
-                    int x = rng.Next(1, 10);
-                    int y = rng.Next(1, 10);
+                    int x = rng.Next(0, 9);
+                    int y = rng.Next(0, 9);
                     if (puzzle.Get(x, y) != 0)
                     {
                         puzzle.Set(x, y, 0);
@@ -232,17 +236,22 @@ namespace Sudoku
 
         public int Get(int x, int y)
         {
-            return internal_grid[x - 1][y - 1];
+            return internal_grid[x][y];
         }
 
         public int Get(Coords coords)
         {
-            return internal_grid[coords.x - 1][coords.y - 1];
+            return internal_grid[coords.x][coords.y];
         }
 
         public void Set(int x, int y, int value)
         {
-            internal_grid[x - 1][y - 1] = value;
+            internal_grid[x][y] = value;
+        }
+
+        public void Set(Coords coords, int value)
+        {
+            internal_grid[coords.x][coords.y] = value;
         }
 
         public void SetGrid(Grid grid)
@@ -271,7 +280,7 @@ namespace Sudoku
         public List<int> GetLinePossibilities(Coords coords)
         {
             List<int> possibilities = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            for (int i = 1; i < 10; i++)
+            for (int i = 0; i < 9; i++)
             {
                 if (i != coords.x)
                 {
@@ -284,7 +293,7 @@ namespace Sudoku
         public List<int> GetRowPossibilities(Coords coords)
         {
             List<int> possibilities = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            for (int i = 1; i < 10; i++)
+            for (int i = 0; i < 9; i++)
             {
                 if (i != coords.y)
                 {
@@ -298,9 +307,9 @@ namespace Sudoku
         {
             List<int> possibilities = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             Grid subgrid = new Grid(3);
-            for (int i = 1; i < 4; i++) // make a new 3x3 subgrid that represents the square the cell is in
+            for (int i = 0; i < 3; i++) // make a new 3x3 subgrid that represents the square the cell is in
             {
-                for (int j = 1; j < 4; j++)
+                for (int j = 0; j < 3; j++)
                 {
                     Coords checked_cell = new Coords(((coords.x - 1) / 3) * 3 + i, ((coords.y - 1) / 3) * 3 + j);
                     if (checked_cell != coords) // if the input cell is being checked, don't remove its number (because it shouldn't make itself impossible)
@@ -345,9 +354,9 @@ namespace Sudoku
 
         public bool IsValid()
         {
-            for (int i = 1; i < 10; i++)
+            for (int i = 0; i < 9; i++)
             {
-                for (int j = 1; j < 10; j++)
+                for (int j = 0; j < 9; j++)
                 {
                     Coords coords = new Coords(i, j);
                     if (!(GetAllPossibilities(coords).Contains(Get(coords)) || Get(coords) == 0)) // check if each number is valid or zero. If not, return false
@@ -361,9 +370,9 @@ namespace Sudoku
 
         public Coords GetFirstEmptyCell()
         {
-            for (int i = 1; i < this.size + 1; i++)
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 1; j < this.size + 1; j++)
+                for (int j = 0; j < size; j++)
                 {
                     if (Get(i, j) == 0)
                     {
@@ -437,9 +446,9 @@ namespace Sudoku
         {
             Grid output = input;
             bool changed = false;
-            for (int i = 1; i < 10; i++)
+            for (int i = 0; i < 9; i++)
             {
-                for (int j = 1; j < 10; j++)
+                for (int j = 0; j < 9; j++)
                 {
                     if (output.GetAllPossibilities(new Coords(i, j)).Count == 1 && output.Get(i, j) == 0)
                     {

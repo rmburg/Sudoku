@@ -26,13 +26,13 @@ namespace SudokuUI
         static Font font_cell_default = new Font("Verdana", 9f);
         static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
         public static DataGridViewCellStyle style_premade = new DataGridViewCellStyle();
-        public Grid viewGrid = new Grid(9);
+        public Grid internal_grid = new Grid(9);
 
         public Form1()
         {
             InitializeComponent();
 
-            style_premade.Font = font_cell_bold;
+            StartPosition = FormStartPosition.CenterScreen;
 
             //add table rows
             ui_grid.Rows.Add();
@@ -57,13 +57,16 @@ namespace SudokuUI
             button8.Click += new EventHandler(ButtonClick);
             button9.Click += new EventHandler(ButtonClick);
             buttonRemove.Click += new EventHandler(ButtonClick);
+            buttonSaveLoad.Click += new EventHandler(FileDiagEvent);
 
             buttonGenerate.Click += new EventHandler(GenerateEvent);
             buttonSolve.Click += new EventHandler(SolveEvent);
+            buttonReset.Click += new EventHandler(ResetEvent);
 
             ui_grid.SelectionChanged += new EventHandler(SelectionUpdate);
             ui_grid.KeyPress += new KeyPressEventHandler(KeyPressEvent);
-            ui_grid.PreviewKeyDown += new PreviewKeyDownEventHandler(KeyPressPreview);
+
+            backgroundWorker1.DoWork += BackgroundWorker1_DoWork; //TODO
 
             //apply color to cells
             ui_grid.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -75,7 +78,7 @@ namespace SudokuUI
                 {
                     if ((i < 3 || i > 5) ^ (j < 3 || j > 5)) // 3x3 checkerboard pattern
                     {
-                        ui_grid.Rows[i].Cells[j].Style.BackColor = Color.DarkGray;
+                        ui_grid[i, j].Style.BackColor = Color.DarkGray;
                     }
                 }
             }
@@ -84,14 +87,42 @@ namespace SudokuUI
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    ui_grid.Rows[i].Cells[j].Tag = new Tag(false);
+                    ui_grid[i, j].Tag = new Tag(false);
                 }
             }
         }
 
-        private void UpdateGrid()
+        private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            SetPremadeGrid(viewGrid);
+            throw new NotImplementedException();
+        }
+
+        public void UpdateGrid()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (internal_grid.Get(i, j) == 0)
+                    {
+                        ui_grid[i, j].Value = null;
+                        MarkPremade(new Coords(i, j), false);
+                    }
+                    else
+                    {
+                        if (internal_grid.Get(i, j) < 0) // if it is a "premade" cell
+                        {
+                            ui_grid[i, j].Value = - internal_grid.Get(i, j);
+                            MarkPremade(new Coords(i, j), true);
+                        }
+                        else
+                        {
+                            ui_grid[i, j].Value = internal_grid.Get(i, j);
+                            MarkPremade(new Coords(i, j), false);
+                        }
+                    }
+                }
+            }
         }
 
         private void SelectionUpdate(object sender, EventArgs e)
@@ -106,31 +137,41 @@ namespace SudokuUI
 
         public void SetCell(Coords coords, int value)
         {
-            ui_grid.Rows[coords.y].Cells[coords.x].Value = value;
+            internal_grid.Set(coords, value);
+            UpdateGrid();
         }
 
         public DataGridViewCell GetCell(Coords coords)
         {
-            return ui_grid.Rows[coords.x].Cells[coords.y];
+            return ui_grid[coords.x, coords.y];
         }
 
         private void ButtonClick(object sender, EventArgs e)
         {
-            Tag tag = (Tag)(GetCell(currentCell).Tag);
-
             if (sender == buttonRemove)
             {
-                if (!tag.premade)
+                if (internal_grid.Get(CurrentCellCoords()) >= 0) // if it is not a premade cell
                 {
                     ui_grid.CurrentCell.Value = null;
                     return;
                 }
+                return;
             }
             string btnText = ((Button)sender).Text;
-            if (!tag.premade)
+            if (internal_grid.Get(CurrentCellCoords()) >= 0)
             {
-                ui_grid.CurrentCell.Value = int.Parse(btnText);
+                SetCell(CurrentCellCoords(), int.Parse(btnText));
             }
+        }
+
+        private Coords CurrentCellCoords()
+        {
+            int x, y;
+
+            x = ui_grid.CurrentCell.ColumnIndex;
+            y = ui_grid.CurrentCell.RowIndex;
+
+            return new Coords(x, y);
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -141,7 +182,7 @@ namespace SudokuUI
 
         private void GenerateEvent(object sender, EventArgs e)
         {
-            //Grid puzzle = Sudoku.Sudoku.GeneratePuzzle(Sudoku.Sudoku.GenerateRandomSolution(), Sudoku.Sudoku.Difficulty.medium);
+
             Grid puzzle = Sudoku.Sudoku.exampleGrid3;
             SetPremadeGrid(puzzle);
         }
@@ -152,54 +193,71 @@ namespace SudokuUI
             SetPremadeGrid(puzzle);
         }
 
-        void SetPremadeGrid(Grid grid)
+        private void ResetEvent(object sender, EventArgs e)
         {
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (grid.Get(new Coords(j + 1, i + 1)) != 0)
+                    if (internal_grid.Get(i, j) > 0)
                     {
-                        SetCell(new Coords(i, j), grid.Get(new Coords(j + 1, i + 1)));
-                        GetCell(new Coords(j, i)).Style.Font = font_cell_bold;
-                        GetCell(new Coords(i, j)).Tag = new Tag(true);
-                    }
-                    else
-                    {
-                        GetCell(new Coords(j, i)).Value = null;
-                        GetCell(new Coords(j, i)).Style.Font = font_cell_default;
-                        GetCell(new Coords(i, j)).Tag = new Tag(false);
+                        SetCell(new Coords(i, j), 0);
                     }
                 }
             }
+            UpdateGrid();
         }
 
+        void SetPremadeGrid(Grid grid)
+        {
+            internal_grid = new Grid(9);
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (grid.Get(new Coords(j, i)) != 0)
+                    {
+                        SetCell(new Coords(i, j), -grid.Get(new Coords(j, i)));
+                        MarkPremade(new Coords(i, j), true);
+                    }
+                    else
+                    {
+                        SetCell(new Coords(i, j), 0);
+                        GetCell(new Coords(i, j)).Value = null;
+                        MarkPremade(new Coords(i, j), false);
+                    }
+                }
+            }
+            UpdateGrid();
+        }
 
         private void KeyPressEvent(object sender, KeyPressEventArgs e)
         {
             char[] allowed = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', (char)Keys.Back};
-            if (allowed.Contains(e.KeyChar))
+            if (internal_grid.Get(CurrentCellCoords()) >= 0)
             {
-                MessageBox.Show("" + e.KeyChar);
-            }
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                MessageBox.Show("enter");
-                e.Handled = true;
+                if (e.KeyChar == (char)Keys.Back || e.KeyChar == '0')
+                {
+                    SetCell(CurrentCellCoords(), 0);
+                    return;
+                }
+                if (allowed.Contains(e.KeyChar))
+                {
+                    SetCell(CurrentCellCoords(), int.Parse("" + e.KeyChar));
+                }
             }
         }
 
-        private void KeyPressPreview(object sender, PreviewKeyDownEventArgs e)
+        private void FileDiagEvent(object sender, EventArgs e)
         {
-            char[] allowed = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', };
-            if (allowed.Contains((char)e.KeyCode))
-            {
-                MessageBox.Show("" + (char)e.KeyCode);
-            }
-            if (((char)e.KeyCode) == (char)Keys.Enter)
-            {
-                MessageBox.Show("enter2");
-            }
+            save_load_dialog diag = new save_load_dialog(this);
+            diag.ShowDialog(this);
+        }
+
+        private void MarkPremade(Coords coords, bool isPremade)
+        {
+            ui_grid[coords.x, coords.y].Tag = new Tag(isPremade); // mark as premade
+            ui_grid[coords.x, coords.y].Style.Font = isPremade?font_cell_bold:font_cell_default; //set font weight
         }
     }
 
@@ -207,7 +265,7 @@ namespace SudokuUI
     {
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.KeyData == Keys.Enter)
+            if (e.KeyData == Keys.Enter || e.KeyData == Keys.Tab)
             {
                 e.Handled = true;
             }

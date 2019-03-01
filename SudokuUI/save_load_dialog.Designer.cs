@@ -28,35 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonLoad = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // buttonLoad
             // 
-            this.button1.Location = new System.Drawing.Point(33, 23);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(150, 47);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Load sudoku from file";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonLoad.Location = new System.Drawing.Point(33, 23);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(150, 47);
+            this.buttonLoad.TabIndex = 0;
+            this.buttonLoad.Text = "Load sudoku from file";
+            this.buttonLoad.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // buttonSave
             // 
-            this.button2.Location = new System.Drawing.Point(33, 76);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(150, 47);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "Save  current sudoku to file";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonSave.Location = new System.Drawing.Point(33, 76);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(150, 47);
+            this.buttonSave.TabIndex = 0;
+            this.buttonSave.Text = "Save current sudoku to file";
+            this.buttonSave.UseVisualStyleBackColor = true;
             // 
             // save_load_dialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(217, 147);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonSave);
+            this.Controls.Add(this.buttonLoad);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "save_load_dialog";
             this.Text = "Save / Load";
             this.Load += new System.EventHandler(this.save_load_dialog_Load);
@@ -66,7 +67,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonLoad;
+        private System.Windows.Forms.Button buttonSave;
     }
 }
