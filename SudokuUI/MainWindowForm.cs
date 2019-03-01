@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sudoku;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace SudokuUI
 {
@@ -20,7 +17,7 @@ namespace SudokuUI
         }
     }
 
-    public partial class Form1 : Form
+    public partial class MainWindowForm : Form
     {
         Coords currentCell = new Coords(0, 0);
         static Font font_cell_default = new Font("Verdana", 9f);
@@ -28,7 +25,7 @@ namespace SudokuUI
         public static DataGridViewCellStyle style_premade = new DataGridViewCellStyle();
         public Grid internal_grid = new Grid(9);
 
-        public Form1()
+        public MainWindowForm(string arg)
         {
             InitializeComponent();
 
@@ -66,12 +63,14 @@ namespace SudokuUI
             ui_grid.SelectionChanged += new EventHandler(SelectionUpdate);
             ui_grid.KeyPress += new KeyPressEventHandler(KeyPressEvent);
 
-            backgroundWorker1.DoWork += BackgroundWorker1_DoWork; //TODO
+            buttonReset.Visible = false;
+            
 
-            //apply color to cells
+            //apply style to cells
             ui_grid.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             ui_grid.GridColor = Color.Black;
             ui_grid.Font = font_cell_default;
+            // apply background pattern
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
@@ -83,21 +82,13 @@ namespace SudokuUI
                 }
             }
 
-            for (int i = 0; i < 9; i++)
+            if (arg != string.Empty)
             {
-                for (int j = 0; j < 9; j++)
-                {
-                    ui_grid[i, j].Tag = new Tag(false);
-                }
+                LoadSudokuFile(arg);
             }
         }
 
-        private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateGrid()
+        public void UpdateGrid() // put the values of the internal grid into the UI
         {
             for (int i = 0; i < 9; i++)
             {
@@ -125,6 +116,11 @@ namespace SudokuUI
             }
         }
 
+        private void SolveGrid()
+        {
+
+        }
+
         private void SelectionUpdate(object sender, EventArgs e)
         {
             DataGridView datagrid = (DataGridView)sender;
@@ -137,6 +133,8 @@ namespace SudokuUI
 
         public void SetCell(Coords coords, int value)
         {
+            buttonSolve.Visible = false;
+            buttonReset.Visible = true;
             internal_grid.Set(coords, value);
             UpdateGrid();
         }
@@ -182,15 +180,17 @@ namespace SudokuUI
 
         private void GenerateEvent(object sender, EventArgs e)
         {
-
-            Grid puzzle = Sudoku.Sudoku.exampleGrid3;
-            SetPremadeGrid(puzzle);
+            SudokuGenerator gen = new SudokuGenerator(this);
+            gen.Show();
         }
 
         private void SolveEvent(object sender, EventArgs e)
         {
-            Grid puzzle = Sudoku.Sudoku.exampleGrid4_hard;
-            SetPremadeGrid(puzzle);
+            DialogResult result = MessageBox.Show("Are you sure?", "Please confirm", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                SolveGrid();
+            }
         }
 
         private void ResetEvent(object sender, EventArgs e)
@@ -206,6 +206,8 @@ namespace SudokuUI
                 }
             }
             UpdateGrid();
+            buttonSolve.Visible = true;
+            buttonReset.Visible = false;
         }
 
         void SetPremadeGrid(Grid grid)
@@ -258,6 +260,18 @@ namespace SudokuUI
         {
             ui_grid[coords.x, coords.y].Tag = new Tag(isPremade); // mark as premade
             ui_grid[coords.x, coords.y].Style.Font = isPremade?font_cell_bold:font_cell_default; //set font weight
+        }
+
+        public void LoadSudokuFile(string path)
+        {
+            Grid deserialized_grid = new Grid(JsonConvert.DeserializeObject<int[][]>(File.ReadAllText(path)), 9);
+            internal_grid.SetGrid(deserialized_grid);
+            UpdateGrid();
+        }
+
+        public void SaveSudokuFile(string path)
+        {
+            File.WriteAllText(path, JsonConvert.SerializeObject(internal_grid.GetGrid()));
         }
     }
 

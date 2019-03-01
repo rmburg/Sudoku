@@ -15,8 +15,8 @@ namespace SudokuUI
 {
     public partial class save_load_dialog : Form
     {
-        Form1 parentform;
-        public save_load_dialog(Form1 parent)
+        MainWindowForm parentform;
+        public save_load_dialog(MainWindowForm parent)
         {
             InitializeComponent();
 
@@ -34,7 +34,6 @@ namespace SudokuUI
 
         private void LoadEvent(object sender, EventArgs e)
         {
-            string filePath;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = Application.StartupPath;
@@ -46,9 +45,7 @@ namespace SudokuUI
                 {
                     try
                     {
-                        Grid deserialized_grid = new Grid(JsonConvert.DeserializeObject<int[][]>(File.ReadAllText(openFileDialog.FileName)), 9);
-                        parentform.internal_grid.SetGrid(deserialized_grid);
-                        parentform.UpdateGrid();
+                        parentform.LoadSudokuFile(openFileDialog.FileName);
                     }
                     catch (Exception)
                     {
@@ -72,7 +69,7 @@ namespace SudokuUI
             {
                 try
                 {
-                    File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(parentform.internal_grid.GetGrid()));
+                    parentform.SaveSudokuFile(saveFileDialog.FileName);
                 }
                 catch (Exception)
                 {

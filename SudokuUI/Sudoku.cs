@@ -91,6 +91,7 @@ namespace Sudoku
             new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0},
             new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0},
         }, 9);
+
         public enum Difficulty
         {
             hard = 35,

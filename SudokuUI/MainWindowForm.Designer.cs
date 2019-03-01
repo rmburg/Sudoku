@@ -1,6 +1,6 @@
 ﻿namespace SudokuUI
 {
-    partial class Form1
+    partial class MainWindowForm
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindowForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ui_grid = new SudokuUI.UIgrid();
@@ -43,9 +43,6 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonSaveLoad = new System.Windows.Forms.Button();
-            this.buttonSolve = new System.Windows.Forms.Button();
-            this.buttonGenerate = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.buttonPanel = new System.Windows.Forms.Panel();
             this.buttonRemove = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
@@ -57,8 +54,10 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.buttonReset = new System.Windows.Forms.Button();
+            this.buttonSolve = new System.Windows.Forms.Button();
+            this.buttonGenerate = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -91,11 +90,11 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.buttonSaveLoad);
+            this.splitContainer1.Panel2.Controls.Add(this.buttonPanel);
             this.splitContainer1.Panel2.Controls.Add(this.buttonReset);
             this.splitContainer1.Panel2.Controls.Add(this.buttonSolve);
             this.splitContainer1.Panel2.Controls.Add(this.buttonGenerate);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Controls.Add(this.buttonPanel);
             this.splitContainer1.Size = new System.Drawing.Size(297, 461);
             this.splitContainer1.SplitterDistance = 293;
             this.splitContainer1.TabIndex = 1;
@@ -235,39 +234,12 @@
             // 
             // buttonSaveLoad
             // 
-            this.buttonSaveLoad.Location = new System.Drawing.Point(196, 125);
+            this.buttonSaveLoad.Location = new System.Drawing.Point(196, 79);
             this.buttonSaveLoad.Name = "buttonSaveLoad";
             this.buttonSaveLoad.Size = new System.Drawing.Size(90, 30);
             this.buttonSaveLoad.TabIndex = 6;
             this.buttonSaveLoad.Text = "Save / Load";
             this.buttonSaveLoad.UseVisualStyleBackColor = true;
-            // 
-            // buttonSolve
-            // 
-            this.buttonSolve.Location = new System.Drawing.Point(196, 17);
-            this.buttonSolve.Name = "buttonSolve";
-            this.buttonSolve.Size = new System.Drawing.Size(90, 30);
-            this.buttonSolve.TabIndex = 5;
-            this.buttonSolve.Text = "Solve";
-            this.buttonSolve.UseVisualStyleBackColor = true;
-            // 
-            // buttonGenerate
-            // 
-            this.buttonGenerate.Location = new System.Drawing.Point(195, 89);
-            this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(90, 30);
-            this.buttonGenerate.TabIndex = 4;
-            this.buttonGenerate.Text = "Generate";
-            this.buttonGenerate.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 145);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(175, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "© Rasmus Mecklenburg 2019";
             // 
             // buttonPanel
             // 
@@ -281,10 +253,10 @@
             this.buttonPanel.Controls.Add(this.button3);
             this.buttonPanel.Controls.Add(this.button2);
             this.buttonPanel.Controls.Add(this.button1);
-            this.buttonPanel.Location = new System.Drawing.Point(12, 12);
+            this.buttonPanel.Location = new System.Drawing.Point(7, 3);
             this.buttonPanel.Margin = new System.Windows.Forms.Padding(7, 3, 7, 3);
             this.buttonPanel.Name = "buttonPanel";
-            this.buttonPanel.Size = new System.Drawing.Size(100, 130);
+            this.buttonPanel.Size = new System.Drawing.Size(100, 127);
             this.buttonPanel.TabIndex = 1;
             // 
             // buttonRemove
@@ -379,14 +351,41 @@
             // 
             // buttonReset
             // 
-            this.buttonReset.Location = new System.Drawing.Point(195, 53);
+            this.buttonReset.Location = new System.Drawing.Point(195, 7);
             this.buttonReset.Name = "buttonReset";
             this.buttonReset.Size = new System.Drawing.Size(90, 30);
             this.buttonReset.TabIndex = 5;
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // buttonSolve
+            // 
+            this.buttonSolve.Location = new System.Drawing.Point(195, 7);
+            this.buttonSolve.Name = "buttonSolve";
+            this.buttonSolve.Size = new System.Drawing.Size(90, 30);
+            this.buttonSolve.TabIndex = 5;
+            this.buttonSolve.Text = "Solve";
+            this.buttonSolve.UseVisualStyleBackColor = true;
+            // 
+            // buttonGenerate
+            // 
+            this.buttonGenerate.Location = new System.Drawing.Point(195, 43);
+            this.buttonGenerate.Name = "buttonGenerate";
+            this.buttonGenerate.Size = new System.Drawing.Size(90, 30);
+            this.buttonGenerate.TabIndex = 4;
+            this.buttonGenerate.Text = "Generate";
+            this.buttonGenerate.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 145);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(175, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "© Rasmus Mecklenburg 2019";
+            // 
+            // MainWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -396,7 +395,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainWindowForm";
             this.Text = "Sudoku";
             this.panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -438,7 +437,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.Button buttonRemove;
         private System.Windows.Forms.Button buttonSaveLoad;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Button buttonReset;
     }
 }
