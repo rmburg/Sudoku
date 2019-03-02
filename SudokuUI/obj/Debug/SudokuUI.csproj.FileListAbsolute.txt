@@ -7,10 +7,8 @@ C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.Generat
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.CoreCompileInputs.cache
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.exe
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.pdb
-C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.save_load_dialog.resources
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.CopyComplete
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.MainWindowForm.resources
-C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.test.resources

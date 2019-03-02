@@ -42,7 +42,17 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buttonSaveLoad = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadSudokuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSudokuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearGridToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.leavePremadeNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearAllNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.solveGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateASudokuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonPanel = new System.Windows.Forms.Panel();
             this.buttonRemove = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
@@ -54,9 +64,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.buttonReset = new System.Windows.Forms.Button();
-            this.buttonSolve = new System.Windows.Forms.Button();
-            this.buttonGenerate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -64,6 +71,7 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.buttonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,7 +81,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(297, 461);
+            this.panel1.Size = new System.Drawing.Size(297, 434);
             this.panel1.TabIndex = 1;
             // 
             // splitContainer1
@@ -86,17 +94,14 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.ui_grid);
+            this.splitContainer1.Panel1.Controls.Add(this.menuStrip1);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.buttonSaveLoad);
             this.splitContainer1.Panel2.Controls.Add(this.buttonPanel);
-            this.splitContainer1.Panel2.Controls.Add(this.buttonReset);
-            this.splitContainer1.Panel2.Controls.Add(this.buttonSolve);
-            this.splitContainer1.Panel2.Controls.Add(this.buttonGenerate);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Size = new System.Drawing.Size(297, 461);
-            this.splitContainer1.SplitterDistance = 293;
+            this.splitContainer1.Size = new System.Drawing.Size(297, 434);
+            this.splitContainer1.SplitterDistance = 305;
             this.splitContainer1.TabIndex = 1;
             // 
             // ui_grid
@@ -121,7 +126,7 @@
             this.Column8,
             this.Column9});
             this.ui_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.ui_grid.Location = new System.Drawing.Point(12, 12);
+            this.ui_grid.Location = new System.Drawing.Point(12, 27);
             this.ui_grid.MultiSelect = false;
             this.ui_grid.Name = "ui_grid";
             this.ui_grid.ReadOnly = true;
@@ -232,14 +237,95 @@
             this.Column9.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column9.Width = 30;
             // 
-            // buttonSaveLoad
+            // menuStrip1
             // 
-            this.buttonSaveLoad.Location = new System.Drawing.Point(196, 115);
-            this.buttonSaveLoad.Name = "buttonSaveLoad";
-            this.buttonSaveLoad.Size = new System.Drawing.Size(90, 30);
-            this.buttonSaveLoad.TabIndex = 6;
-            this.buttonSaveLoad.Text = "Save / Load";
-            this.buttonSaveLoad.UseVisualStyleBackColor = true;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.actionsToolStripMenuItem,
+            this.extrasToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(297, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadSudokuToolStripMenuItem,
+            this.saveSudokuToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // loadSudokuToolStripMenuItem
+            // 
+            this.loadSudokuToolStripMenuItem.Name = "loadSudokuToolStripMenuItem";
+            this.loadSudokuToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.loadSudokuToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.loadSudokuToolStripMenuItem.Text = "Load sudoku";
+            this.loadSudokuToolStripMenuItem.Click += new System.EventHandler(this.loadSudokuToolStripMenuItem_Click);
+            // 
+            // saveSudokuToolStripMenuItem
+            // 
+            this.saveSudokuToolStripMenuItem.Name = "saveSudokuToolStripMenuItem";
+            this.saveSudokuToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveSudokuToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveSudokuToolStripMenuItem.Text = "Save sudoku";
+            this.saveSudokuToolStripMenuItem.Click += new System.EventHandler(this.saveSudokuToolStripMenuItem_Click);
+            // 
+            // actionsToolStripMenuItem
+            // 
+            this.actionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearGridToolStripMenuItem1,
+            this.solveGridToolStripMenuItem});
+            this.actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
+            this.actionsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.actionsToolStripMenuItem.Text = "Actions";
+            // 
+            // clearGridToolStripMenuItem1
+            // 
+            this.clearGridToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.leavePremadeNumbersToolStripMenuItem,
+            this.clearAllNumbersToolStripMenuItem});
+            this.clearGridToolStripMenuItem1.Name = "clearGridToolStripMenuItem1";
+            this.clearGridToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.clearGridToolStripMenuItem1.Text = "Clear grid";
+            // 
+            // leavePremadeNumbersToolStripMenuItem
+            // 
+            this.leavePremadeNumbersToolStripMenuItem.Name = "leavePremadeNumbersToolStripMenuItem";
+            this.leavePremadeNumbersToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.leavePremadeNumbersToolStripMenuItem.Text = "Leave premade numbers";
+            this.leavePremadeNumbersToolStripMenuItem.Click += new System.EventHandler(this.leavePremadeNumbersToolStripMenuItem_Click);
+            // 
+            // clearAllNumbersToolStripMenuItem
+            // 
+            this.clearAllNumbersToolStripMenuItem.Name = "clearAllNumbersToolStripMenuItem";
+            this.clearAllNumbersToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.clearAllNumbersToolStripMenuItem.Text = "Clear all numbers";
+            this.clearAllNumbersToolStripMenuItem.Click += new System.EventHandler(this.clearAllNumbersToolStripMenuItem_Click);
+            // 
+            // solveGridToolStripMenuItem
+            // 
+            this.solveGridToolStripMenuItem.Name = "solveGridToolStripMenuItem";
+            this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.solveGridToolStripMenuItem.Text = "Solve grid";
+            this.solveGridToolStripMenuItem.Click += new System.EventHandler(this.solveGridToolStripMenuItem_Click);
+            // 
+            // extrasToolStripMenuItem
+            // 
+            this.extrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generateASudokuToolStripMenuItem});
+            this.extrasToolStripMenuItem.Name = "extrasToolStripMenuItem";
+            this.extrasToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.extrasToolStripMenuItem.Text = "Extras";
+            // 
+            // generateASudokuToolStripMenuItem
+            // 
+            this.generateASudokuToolStripMenuItem.Name = "generateASudokuToolStripMenuItem";
+            this.generateASudokuToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.generateASudokuToolStripMenuItem.Text = "Generate a sudoku";
             // 
             // buttonPanel
             // 
@@ -256,130 +342,103 @@
             this.buttonPanel.Location = new System.Drawing.Point(7, 3);
             this.buttonPanel.Margin = new System.Windows.Forms.Padding(7, 3, 7, 3);
             this.buttonPanel.Name = "buttonPanel";
-            this.buttonPanel.Size = new System.Drawing.Size(98, 127);
+            this.buttonPanel.Size = new System.Drawing.Size(283, 86);
             this.buttonPanel.TabIndex = 1;
             // 
             // buttonRemove
             // 
-            this.buttonRemove.Location = new System.Drawing.Point(34, 91);
+            this.buttonRemove.Location = new System.Drawing.Point(196, 40);
             this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(30, 30);
+            this.buttonRemove.Size = new System.Drawing.Size(35, 35);
             this.buttonRemove.TabIndex = 9;
             this.buttonRemove.Text = "X";
             this.buttonRemove.UseVisualStyleBackColor = true;
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(63, 62);
+            this.button9.Location = new System.Drawing.Point(160, 40);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(30, 30);
+            this.button9.Size = new System.Drawing.Size(35, 35);
             this.button9.TabIndex = 8;
             this.button9.Text = "9";
             this.button9.UseVisualStyleBackColor = true;
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(34, 62);
+            this.button8.Location = new System.Drawing.Point(124, 40);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(30, 30);
+            this.button8.Size = new System.Drawing.Size(35, 35);
             this.button8.TabIndex = 7;
             this.button8.Text = "8";
             this.button8.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(5, 62);
+            this.button7.Location = new System.Drawing.Point(88, 40);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(30, 30);
+            this.button7.Size = new System.Drawing.Size(35, 35);
             this.button7.TabIndex = 6;
             this.button7.Text = "7";
             this.button7.UseVisualStyleBackColor = true;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(63, 33);
+            this.button6.Location = new System.Drawing.Point(52, 40);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(30, 30);
+            this.button6.Size = new System.Drawing.Size(35, 35);
             this.button6.TabIndex = 5;
             this.button6.Text = "6";
             this.button6.UseVisualStyleBackColor = true;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(34, 33);
+            this.button5.Location = new System.Drawing.Point(196, 4);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(30, 30);
+            this.button5.Size = new System.Drawing.Size(35, 35);
             this.button5.TabIndex = 4;
             this.button5.Text = "5";
             this.button5.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(5, 33);
+            this.button4.Location = new System.Drawing.Point(160, 4);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(30, 30);
+            this.button4.Size = new System.Drawing.Size(35, 35);
             this.button4.TabIndex = 3;
             this.button4.Text = "4";
             this.button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(63, 4);
+            this.button3.Location = new System.Drawing.Point(124, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(30, 30);
+            this.button3.Size = new System.Drawing.Size(35, 35);
             this.button3.TabIndex = 2;
             this.button3.Text = "3";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(34, 4);
+            this.button2.Location = new System.Drawing.Point(88, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(30, 30);
+            this.button2.Size = new System.Drawing.Size(35, 35);
             this.button2.TabIndex = 1;
             this.button2.Text = "2";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(5, 4);
+            this.button1.Location = new System.Drawing.Point(52, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(30, 30);
+            this.button1.Size = new System.Drawing.Size(35, 35);
             this.button1.TabIndex = 0;
             this.button1.Text = "1";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // buttonReset
-            // 
-            this.buttonReset.Location = new System.Drawing.Point(195, 43);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(90, 30);
-            this.buttonReset.TabIndex = 5;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = true;
-            // 
-            // buttonSolve
-            // 
-            this.buttonSolve.Location = new System.Drawing.Point(195, 7);
-            this.buttonSolve.Name = "buttonSolve";
-            this.buttonSolve.Size = new System.Drawing.Size(90, 30);
-            this.buttonSolve.TabIndex = 5;
-            this.buttonSolve.Text = "Solve";
-            this.buttonSolve.UseVisualStyleBackColor = true;
-            // 
-            // buttonGenerate
-            // 
-            this.buttonGenerate.Location = new System.Drawing.Point(195, 79);
-            this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(90, 30);
-            this.buttonGenerate.TabIndex = 4;
-            this.buttonGenerate.Text = "Generate";
-            this.buttonGenerate.UseVisualStyleBackColor = true;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 145);
+            this.label1.Location = new System.Drawing.Point(12, 103);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(175, 13);
             this.label1.TabIndex = 3;
@@ -389,21 +448,25 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(297, 461);
+            this.ClientSize = new System.Drawing.Size(297, 434);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "MainWindowForm";
             this.Text = "Sudoku";
             this.panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.buttonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -424,8 +487,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button buttonSolve;
-        private System.Windows.Forms.Button buttonGenerate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
@@ -436,8 +497,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.Button buttonRemove;
-        private System.Windows.Forms.Button buttonSaveLoad;
-        private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadSudokuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveSudokuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem actionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearGridToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem leavePremadeNumbersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearAllNumbersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem solveGridToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extrasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateASudokuToolStripMenuItem;
     }
 }
 
