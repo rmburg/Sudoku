@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define buttonswap
+
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -63,8 +65,10 @@ namespace SudokuUI
             ui_grid.SelectionChanged += new EventHandler(SelectionUpdate);
             ui_grid.KeyPress += new KeyPressEventHandler(KeyPressEvent);
 
+            #if buttonswap
             buttonReset.Visible = false;
-            
+            #endif
+
 
             //apply style to cells
             ui_grid.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -127,14 +131,16 @@ namespace SudokuUI
             Coords pos = new Coords();
             pos.x = datagrid.CurrentCell.ColumnIndex;
             pos.y = datagrid.CurrentCell.RowIndex;
-            
+
             currentCell = pos;
         }
 
         public void SetCell(Coords coords, int value)
         {
+            #if buttonswap
             buttonSolve.Visible = false;
             buttonReset.Visible = true;
+            #endif
             internal_grid.Set(coords, value);
             UpdateGrid();
         }
@@ -180,8 +186,9 @@ namespace SudokuUI
 
         private void GenerateEvent(object sender, EventArgs e)
         {
-            SudokuGenerator gen = new SudokuGenerator(this);
-            gen.Show();
+            MessageBox.Show("not implemented yet.");
+            test test_window = new test();
+            test_window.Show();
         }
 
         private void SolveEvent(object sender, EventArgs e)
@@ -206,8 +213,10 @@ namespace SudokuUI
                 }
             }
             UpdateGrid();
-            buttonSolve.Visible = true;
-            buttonReset.Visible = false;
+            #if buttonswap
+                buttonSolve.Visible = true;
+                buttonReset.Visible = false;
+            #endif
         }
 
         void SetPremadeGrid(Grid grid)

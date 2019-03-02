@@ -122,6 +122,12 @@ namespace Sudoku
             return gen.Generate();
         }
 
+        public static Grid GenerateRandomSolution(Action<int> update_ui)
+        {
+            Generator gen = new Generator();
+            return gen.Generate(update_ui);
+        }
+
         public static Grid GeneratePuzzle(Grid solution, Difficulty difficulty)
         {
             Grid puzzle;
@@ -506,8 +512,53 @@ namespace Sudoku
                 foreach (int item in possibilities)
                 {
                     input.Set(emptyCell.x, emptyCell.y, item);
-                    
-                    System.Threading.Thread.Sleep(50);
+
+                    GenerateRecursive(input);
+                    if (done)
+                    {
+                        return;
+                    }
+                }
+                //backtrack
+                input.Set(emptyCell.x, emptyCell.y, 0);
+            }
+        }
+
+        public Grid Generate(Action<int> update_ui)
+        {
+            done = false;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            temp_grid = new Grid(9);
+            GenerateRecursive(temp_grid);
+
+            watch.Stop();
+
+            double elapsedSeconds = watch.ElapsedMilliseconds / 1000d;
+            //TODO: use time
+            return outGrid;
+        }
+
+        public void GenerateRecursive(Grid input, Action<int> update_ui)
+        {
+            if (!input.ContainsZeros()) // if it is fully solved
+            {
+                outGrid = input.Clone();
+                done = true;
+                return;
+            }
+            else
+            {
+                // find the first empty cell
+                Coords emptyCell = input.GetFirstEmptyCell();
+
+                // get all possibilities for (x, y)
+                List<int> possibilities = Shuffle(input.GetAllPossibilities(emptyCell));
+                foreach (int item in possibilities)
+                {
+                    input.Set(emptyCell.x, emptyCell.y, item);
+
+                    update_ui((emptyCell.x * 9 + emptyCell.y) * 100 / 80);
 
                     GenerateRecursive(input);
                     if (done)
