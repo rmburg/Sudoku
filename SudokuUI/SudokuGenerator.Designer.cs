@@ -62,7 +62,7 @@
             // buttonGenPuzzle
             // 
             this.buttonGenPuzzle.Enabled = false;
-            this.buttonGenPuzzle.Location = new System.Drawing.Point(333, 90);
+            this.buttonGenPuzzle.Location = new System.Drawing.Point(333, 116);
             this.buttonGenPuzzle.Name = "buttonGenPuzzle";
             this.buttonGenPuzzle.Size = new System.Drawing.Size(125, 23);
             this.buttonGenPuzzle.TabIndex = 2;
@@ -80,19 +80,21 @@
             this.listBox1.Enabled = false;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Items.AddRange(new object[] {
+            "Very easy",
             "Easy",
             "Medium",
-            "Hard"});
+            "Hard",
+            "Extreme"});
             this.listBox1.Location = new System.Drawing.Point(333, 41);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(125, 43);
+            this.listBox1.Size = new System.Drawing.Size(125, 69);
             this.listBox1.TabIndex = 3;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // buttonSave
             // 
             this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(333, 148);
+            this.buttonSave.Location = new System.Drawing.Point(333, 174);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(125, 23);
             this.buttonSave.TabIndex = 2;
@@ -233,7 +235,7 @@
             // progressBar1
             // 
             this.progressBar1.Enabled = false;
-            this.progressBar1.Location = new System.Drawing.Point(333, 119);
+            this.progressBar1.Location = new System.Drawing.Point(333, 145);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(125, 23);
             this.progressBar1.TabIndex = 4;

@@ -34,9 +34,11 @@ namespace Sudoku
 
     public enum Difficulty
     {
-        hard = 35,
-        medium = 50,
-        easy = 75
+        extreme = 0,
+        hard = 10,
+        medium = 20,
+        easy = 30, 
+        very_easy = 40
     }
 
     public class Sudoku

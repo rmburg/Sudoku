@@ -110,6 +110,7 @@ namespace SudokuUI
 
         private void SelectionUpdate(object sender, EventArgs e)
         {
+            //TODO:
             //set all colors to normal
             //set all numbers that are the same as the selected one to e.g. blue
         }
@@ -162,8 +163,8 @@ namespace SudokuUI
         {
             int x, y;
 
-            x = ui_grid.CurrentCell.ColumnIndex;
-            y = ui_grid.CurrentCell.RowIndex;
+            y = ui_grid.CurrentCell.ColumnIndex;
+            x = ui_grid.CurrentCell.RowIndex;
 
             return new Coords(x, y);
         }
@@ -348,16 +349,9 @@ namespace SudokuUI
                 // get all possibilities for the first empty cell
                 
                 List<int> possibilities = internal_grid.GetAllPossibilities(emptyCell);
-
-                string possibs_string = "";
-
-                foreach (int item in internal_grid.GetSquarePossibilities(emptyCell))
-                {
-                    possibs_string += item + ", ";
-                }
+                
                 foreach (int item in possibilities) // try each possible number
                 {
-                    //MessageBox.Show($"setting ({emptyCell.x}, {emptyCell.y}) to {item}. possibs are {possibs_string}");
                     SetCell(emptyCell, item);
 
                     bool solutionFound = SolveRecursive(findAll); // if the next fuction call returns true (has found a solution)

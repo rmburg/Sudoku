@@ -112,6 +112,7 @@ namespace SudokuUI
             {
                 bgW_GenSolution.RunWorkerAsync(false);
             }
+            buttonGenPuzzle.Enabled = false;
         }
 
         private void bgW_GenSolution_DoWork(object sender, DoWorkEventArgs e)
@@ -188,8 +189,30 @@ namespace SudokuUI
                     //MessageBox.Show($"resetting {removedCell.x}, {removedCell.y}: {removedCellvalue}");
                     temp_grid.Set(removedCell, removedCellvalue);
                 }
-                bgW_GenSolution.ReportProgress((int) (81 - cells.Count) * 100 / 81);
+                bgW_GenSolution.ReportProgress((int)(81 - cells.Count) * 100 / 81);
             }
+
+            List<Coords> emptyCells = new List<Coords>();
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (temp_grid.Get(i, j) == 0)
+                    {
+                        emptyCells.Add(new Coords(i, j));
+                    }
+                }
+            }
+            emptyCells = Lib.Shuffle(emptyCells);
+            // add a number of "hint numbers" to the grid, how many depends on the chosen difficulty
+            int numbers_added = 0;
+            while (numbers_added < (int)difficulty)
+            {
+                temp_grid.Set(emptyCells[0], internal_grid.Get(emptyCells[0])); // fill in a number from the solution
+                numbers_added++;
+                emptyCells.RemoveAt(0);
+            }
+
             internal_grid = temp_grid.Clone();
             UpdateGrid();
         }
@@ -200,16 +223,22 @@ namespace SudokuUI
             switch (listBox1.SelectedIndex)
             {
                 case 0:
-                    selectedDifficulty = Difficulty.easy;
+                    selectedDifficulty = Difficulty.very_easy;
                     break;
                 case 1:
-                    selectedDifficulty = Difficulty.medium;
+                    selectedDifficulty = Difficulty.easy;
                     break;
                 case 2:
+                    selectedDifficulty = Difficulty.medium;
+                    break;
+                case 3:
                     selectedDifficulty = Difficulty.hard;
                     break;
-                default:
+                case 4:
+                    selectedDifficulty = Difficulty.extreme;
                     break;
+                default:
+                    throw new Exception();
             }
         }
 
