@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Sudoku;
 using System.IO;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SudokuUI
 {
@@ -19,11 +20,12 @@ namespace SudokuUI
 
     public partial class MainWindowForm : Form
     {
-        Coords currentCell = new Coords(0, 0);
         static Font font_cell_default = new Font("Verdana", 9f);
         static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
         public static DataGridViewCellStyle style_premade = new DataGridViewCellStyle();
         public Grid internal_grid = new Grid(9);
+
+        List<Grid> possible_solutions = new List<Grid>();
 
         public MainWindowForm(string arg)
         {
@@ -110,9 +112,9 @@ namespace SudokuUI
             }
         }
 
-        private void SolveGrid()
+        private void GenerateSolution()
         {
-            MessageBox.Show("solving isn't implemented yet.");
+            MessageBox.Show("Generating isn't implemented yet."); // TODO
         }
 
         private void SelectionUpdate(object sender, EventArgs e)
@@ -121,8 +123,6 @@ namespace SudokuUI
             Coords pos = new Coords();
             pos.x = datagrid.CurrentCell.ColumnIndex;
             pos.y = datagrid.CurrentCell.RowIndex;
-
-            currentCell = pos;
         }
 
         public void SetCell(Coords coords, int value)
@@ -142,7 +142,7 @@ namespace SudokuUI
             {
                 if (internal_grid.Get(CurrentCellCoords()) >= 0) // if it is not a premade cell
                 {
-                    ui_grid.CurrentCell.Value = null;
+                    SetCell(CurrentCellCoords(), 0);
                     return;
                 }
                 return;
@@ -162,26 +162,6 @@ namespace SudokuUI
             y = ui_grid.CurrentCell.RowIndex;
 
             return new Coords(x, y);
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            currentCell.x = e.ColumnIndex;
-            currentCell.y = e.RowIndex;
-        }
-
-        private void GenerateEvent(object sender, EventArgs e)
-        {
-            MessageBox.Show("not implemented yet.");
-        }
-
-        private void SolveEvent(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Are you sure?", "Please confirm", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                SolveGrid();
-            }
         }
 
         void ResetGrid()
@@ -331,7 +311,7 @@ namespace SudokuUI
 
         private void leavePremadeNumbersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Are you sure? This will delete all the numbers you entered", "Please confirm", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Are you sure? This will delete all the numbers you entered.", "Please confirm", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 ResetGrid();
@@ -347,21 +327,99 @@ namespace SudokuUI
             }
         }
 
-        private void solveGridToolStripMenuItem_Click(object sender, EventArgs e)
+        private void generateASudokuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenerateSolution();
+        }
+
+        public bool SolveRecursive(bool findAll)
+        {
+            bool done = false;
+            if (!internal_grid.ContainsZeros()) // if it is fully solved
+            {
+                possible_solutions.Add(internal_grid.Clone());
+                done = true;
+                return true;
+            }
+            else
+            {
+                // find the first empty cell
+                Coords emptyCell = internal_grid.GetFirstEmptyCell();
+
+                // get all possibilities for the first empty cell
+                
+                List<int> possibilities = internal_grid.GetAllPossibilities(emptyCell);
+
+                string possibs_string = "";
+
+                foreach (int item in internal_grid.GetSquarePossibilities(emptyCell))
+                {
+                    possibs_string += item + ", ";
+                }
+                foreach (int item in possibilities) // try each possible number
+                {
+                    //MessageBox.Show($"setting ({emptyCell.x}, {emptyCell.y}) to {item}. possibs are {possibs_string}");
+                    SetCell(emptyCell, item);
+                    if (SolveRecursive(findAll)) // if the next fuction call returns true (has found a solution)
+                    {
+                        return true;
+                    }
+                }
+                //backtrack
+                SetCell(emptyCell, 0);
+                return false;
+            }
+        }
+
+        private void worker_solve_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            bool findAll = (bool)e.Argument;
+            if (findAll) // if the user wats to find all solutions
+            {
+                SolveRecursive(true);
+                MessageBox.Show("Solutions found: "+ possible_solutions.Count);
+                if (possible_solutions.Count > 0)
+                {
+                    internal_grid = possible_solutions[0];
+                    UpdateGrid();
+                }
+            }
+            else
+            {
+                SolveRecursive(false);
+                MessageBox.Show(possible_solutions.Count == 0 ? "No solutions was found." : "A solution was found.");
+                if (possible_solutions.Count > 0)
+                {
+                    internal_grid = possible_solutions[0];
+                    UpdateGrid();
+                }
+            }
+        }
+
+        private void findOneSolutionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure? This will solve the grid. If you entered any wrong numbers, no solution may be possible.", "Please confirm", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                SolveGrid();
+                worker_solve.RunWorkerAsync(false);
+            }
+        }
+
+        private void findAllSolutionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure? This will solve the grid. If you entered any wrong numbers, no solution may be possible.", "Please confirm", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                worker_solve.RunWorkerAsync(true);
             }
         }
     }
 
-    public class UIgrid : DataGridView
+    public class UIgrid : DataGridView // derived class just to avoid the standard behavior of keys like enter, tab and back
     {
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.KeyData == Keys.Enter || e.KeyData == Keys.Tab)
+            if (e.KeyData == Keys.Enter || e.KeyData == Keys.Tab || e.KeyData == Keys.Back)
             {
                 e.Handled = true;
             }

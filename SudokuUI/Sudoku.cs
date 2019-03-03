@@ -291,7 +291,7 @@ namespace Sudoku
             {
                 if (i != coords.x)
                 {
-                    possibilities.Remove(Get(i, coords.y));
+                    possibilities.Remove(Math.Abs(Get(i, coords.y)));
                 }
             }
             return possibilities;
@@ -304,7 +304,7 @@ namespace Sudoku
             {
                 if (i != coords.y)
                 {
-                    possibilities.Remove(Get(coords.x, i));
+                    possibilities.Remove(Math.Abs(Get(coords.x, i)));
                 }
             }
             return possibilities;
@@ -318,7 +318,7 @@ namespace Sudoku
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    Coords checked_cell = new Coords(((coords.x - 1) / 3) * 3 + i, ((coords.y - 1) / 3) * 3 + j);
+                    Coords checked_cell = new Coords(((coords.x) / 3) * 3 + i, ((coords.y) / 3) * 3 + j);
                     if (checked_cell != coords) // if the input cell is being checked, don't remove its number (because it shouldn't make itself impossible)
                     {
                         subgrid.Set(i, j, Get(checked_cell));
@@ -331,7 +331,7 @@ namespace Sudoku
             }
             foreach (int number in subgrid.GetAllNumbers())
             {
-                possibilities.Remove(number);
+                possibilities.Remove(Math.Abs(number));
             }
             return possibilities;
         }
@@ -408,10 +408,11 @@ namespace Sudoku
     public class Solver
     {
         Grid temp_grid;
-        List<Grid> possible_solutions = new List<Grid>();
+        List<Grid> possible_solutions;
 
         public List<Grid> Solve(Sudoku input)
         {
+            possible_solutions = new List<Grid>();
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             temp_grid = input.grid.Clone();

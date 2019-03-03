@@ -51,6 +51,8 @@
             this.leavePremadeNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearAllNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solveGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findOneSolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findAllSolutionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateASudokuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonPanel = new System.Windows.Forms.Panel();
@@ -65,6 +67,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.worker_solve = new System.ComponentModel.BackgroundWorker();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -137,7 +140,6 @@
             this.ui_grid.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.ui_grid.Size = new System.Drawing.Size(273, 273);
             this.ui_grid.TabIndex = 0;
-            this.ui_grid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Column1
             // 
@@ -308,10 +310,26 @@
             // 
             // solveGridToolStripMenuItem
             // 
+            this.solveGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.findOneSolutionToolStripMenuItem,
+            this.findAllSolutionsToolStripMenuItem});
             this.solveGridToolStripMenuItem.Name = "solveGridToolStripMenuItem";
             this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.solveGridToolStripMenuItem.Text = "Solve grid";
-            this.solveGridToolStripMenuItem.Click += new System.EventHandler(this.solveGridToolStripMenuItem_Click);
+            // 
+            // findOneSolutionToolStripMenuItem
+            // 
+            this.findOneSolutionToolStripMenuItem.Name = "findOneSolutionToolStripMenuItem";
+            this.findOneSolutionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.findOneSolutionToolStripMenuItem.Text = "Find 1 solution";
+            this.findOneSolutionToolStripMenuItem.Click += new System.EventHandler(this.findOneSolutionToolStripMenuItem_Click);
+            // 
+            // findAllSolutionsToolStripMenuItem
+            // 
+            this.findAllSolutionsToolStripMenuItem.Name = "findAllSolutionsToolStripMenuItem";
+            this.findAllSolutionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.findAllSolutionsToolStripMenuItem.Text = "Find all solutions";
+            this.findAllSolutionsToolStripMenuItem.Click += new System.EventHandler(this.findAllSolutionsToolStripMenuItem_Click);
             // 
             // extrasToolStripMenuItem
             // 
@@ -324,8 +342,9 @@
             // generateASudokuToolStripMenuItem
             // 
             this.generateASudokuToolStripMenuItem.Name = "generateASudokuToolStripMenuItem";
-            this.generateASudokuToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.generateASudokuToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.generateASudokuToolStripMenuItem.Text = "Generate a sudoku";
+            this.generateASudokuToolStripMenuItem.Click += new System.EventHandler(this.generateASudokuToolStripMenuItem_Click);
             // 
             // buttonPanel
             // 
@@ -444,6 +463,10 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "© Rasmus Mecklenburg 2019";
             // 
+            // worker_solve
+            // 
+            this.worker_solve.DoWork += new System.ComponentModel.DoWorkEventHandler(this.worker_solve_DoWork);
+            // 
             // MainWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -508,6 +531,9 @@
         private System.Windows.Forms.ToolStripMenuItem solveGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extrasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateASudokuToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker worker_solve;
+        private System.Windows.Forms.ToolStripMenuItem findOneSolutionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem findAllSolutionsToolStripMenuItem;
     }
 }
 
