@@ -1,6 +1,6 @@
 ﻿namespace SudokuUI
 {
-    partial class SudokuViewer
+    partial class SudokuGenerator
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,12 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SudokuViewer));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SudokuGenerator));
+            this.buttonGenSolution = new System.Windows.Forms.Button();
+            this.buttonGenPuzzle = new System.Windows.Forms.Button();
+            this.bgW_GenSolution = new System.ComponentModel.BackgroundWorker();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.ui_grid = new SudokuUI.UIgrid();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,13 +45,60 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buttonGenSolution = new System.Windows.Forms.Button();
-            this.buttonGenPuzzle = new System.Windows.Forms.Button();
-            this.bgW_GenSolution = new System.ComponentModel.BackgroundWorker();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.buttonSave = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).BeginInit();
             this.SuspendLayout();
+            // 
+            // buttonGenSolution
+            // 
+            this.buttonGenSolution.Location = new System.Drawing.Point(333, 12);
+            this.buttonGenSolution.Name = "buttonGenSolution";
+            this.buttonGenSolution.Size = new System.Drawing.Size(125, 23);
+            this.buttonGenSolution.TabIndex = 2;
+            this.buttonGenSolution.Text = "Generate a solution";
+            this.buttonGenSolution.UseVisualStyleBackColor = true;
+            this.buttonGenSolution.Click += new System.EventHandler(this.buttonGenSolution_Click);
+            // 
+            // buttonGenPuzzle
+            // 
+            this.buttonGenPuzzle.Enabled = false;
+            this.buttonGenPuzzle.Location = new System.Drawing.Point(333, 90);
+            this.buttonGenPuzzle.Name = "buttonGenPuzzle";
+            this.buttonGenPuzzle.Size = new System.Drawing.Size(125, 23);
+            this.buttonGenPuzzle.TabIndex = 2;
+            this.buttonGenPuzzle.Text = "Generate a puzzle";
+            this.buttonGenPuzzle.UseVisualStyleBackColor = true;
+            this.buttonGenPuzzle.Click += new System.EventHandler(this.buttonGenPuzzle_Click);
+            // 
+            // bgW_GenSolution
+            // 
+            this.bgW_GenSolution.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgW_GenSolution_DoWork);
+            this.bgW_GenSolution.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgW_GenSolution_RunWorkerCompleted);
+            // 
+            // listBox1
+            // 
+            this.listBox1.Enabled = false;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Items.AddRange(new object[] {
+            "Easy",
+            "Medium",
+            "Hard"});
+            this.listBox1.Location = new System.Drawing.Point(333, 41);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(125, 43);
+            this.listBox1.TabIndex = 3;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Enabled = false;
+            this.buttonSave.Location = new System.Drawing.Point(333, 148);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(125, 23);
+            this.buttonSave.TabIndex = 2;
+            this.buttonSave.Text = "Save this sudoku";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // ui_grid
             // 
@@ -178,59 +230,20 @@
             this.Column9.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column9.Width = 30;
             // 
-            // buttonGenSolution
+            // progressBar1
             // 
-            this.buttonGenSolution.Location = new System.Drawing.Point(333, 12);
-            this.buttonGenSolution.Name = "buttonGenSolution";
-            this.buttonGenSolution.Size = new System.Drawing.Size(125, 23);
-            this.buttonGenSolution.TabIndex = 2;
-            this.buttonGenSolution.Text = "Generate a solution";
-            this.buttonGenSolution.UseVisualStyleBackColor = true;
-            this.buttonGenSolution.Click += new System.EventHandler(this.buttonGenSolution_Click);
+            this.progressBar1.Enabled = false;
+            this.progressBar1.Location = new System.Drawing.Point(333, 119);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(125, 23);
+            this.progressBar1.TabIndex = 4;
             // 
-            // buttonGenPuzzle
-            // 
-            this.buttonGenPuzzle.Enabled = false;
-            this.buttonGenPuzzle.Location = new System.Drawing.Point(333, 41);
-            this.buttonGenPuzzle.Name = "buttonGenPuzzle";
-            this.buttonGenPuzzle.Size = new System.Drawing.Size(125, 23);
-            this.buttonGenPuzzle.TabIndex = 2;
-            this.buttonGenPuzzle.Text = "Generate a puzzle";
-            this.buttonGenPuzzle.UseVisualStyleBackColor = true;
-            this.buttonGenPuzzle.Click += new System.EventHandler(this.buttonGenPuzzle_Click);
-            // 
-            // bgW_GenSolution
-            // 
-            this.bgW_GenSolution.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgW_GenSolution_DoWork);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "Easy",
-            "Medium",
-            "Hard"});
-            this.listBox1.Location = new System.Drawing.Point(333, 70);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(125, 43);
-            this.listBox1.TabIndex = 3;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
-            // buttonSave
-            // 
-            this.buttonSave.Location = new System.Drawing.Point(333, 180);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(125, 23);
-            this.buttonSave.TabIndex = 2;
-            this.buttonSave.Text = "Save this sudoku";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
-            // SudokuViewer
+            // SudokuGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(498, 297);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonGenPuzzle);
@@ -238,8 +251,8 @@
             this.Controls.Add(this.ui_grid);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "SudokuViewer";
-            this.Text = "SudokuViewer";
+            this.Name = "SudokuGenerator";
+            this.Text = "Sudoku Genarator";
             this.Load += new System.EventHandler(this.SudokuViewer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).EndInit();
             this.ResumeLayout(false);
@@ -263,5 +276,6 @@
         private System.ComponentModel.BackgroundWorker bgW_GenSolution;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

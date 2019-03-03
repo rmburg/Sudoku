@@ -9,7 +9,7 @@ using System.IO;
 
 namespace SudokuUI
 {
-    public partial class SudokuViewer : Form
+    public partial class SudokuGenerator : Form
     {
         public static Font font_cell_default = new Font("Verdana", 9f);
         public static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
@@ -19,9 +19,12 @@ namespace SudokuUI
         public List<Grid> possible_solutions;
         bool filled = false;
 
-        public SudokuViewer()
+        public SudokuGenerator()
         {
             InitializeComponent();
+
+            bgW_GenSolution.WorkerReportsProgress = true;
+            bgW_GenSolution.ProgressChanged += new ProgressChangedEventHandler(ProgressUpdate);
 
             ui_grid.Rows.Add();
             ui_grid.Rows.Add();
@@ -100,6 +103,7 @@ namespace SudokuUI
             {
                 bgW_GenSolution.RunWorkerAsync(true);
             }
+            listBox1.Enabled = true;
         }
 
         private void buttonGenPuzzle_Click(object sender, EventArgs e)
@@ -122,7 +126,6 @@ namespace SudokuUI
             }
             else
             {
-                MessageBox.Show("selected difficulty: " + selectedDifficulty);
                 GeneratePuzzle(selectedDifficulty);
             }
         }
@@ -185,14 +188,10 @@ namespace SudokuUI
                     //MessageBox.Show($"resetting {removedCell.x}, {removedCell.y}: {removedCellvalue}");
                     temp_grid.Set(removedCell, removedCellvalue);
                 }
+                bgW_GenSolution.ReportProgress((int) (81 - cells.Count) * 100 / 81);
             }
             internal_grid = temp_grid.Clone();
             UpdateGrid();
-        }
-
-        public void GeneratePuzzleRecursive(Difficulty difficulty)
-        {
-
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -233,7 +232,7 @@ namespace SudokuUI
             return output;
         }
 
-        public void SaveSudokuFile(string path)
+        public void SaveSudokuFileAsPremade(string path)
         {
             File.WriteAllText(path, JsonConvert.SerializeObject(MakePremade(internal_grid).GetGrid()));
         }
@@ -251,13 +250,24 @@ namespace SudokuUI
             {
                 try
                 {
-                    SaveSudokuFile(saveFileDialog.FileName);
+                    SaveSudokuFileAsPremade(saveFileDialog.FileName);
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show("Error: " + e.Message, "An error has occured");
                 }
             }
+        }
+
+        void ProgressUpdate(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void bgW_GenSolution_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressBar1.Value = 0;
+            buttonSave.Enabled = true;
         }
     }
 }

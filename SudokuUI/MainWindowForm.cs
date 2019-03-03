@@ -104,8 +104,7 @@ namespace SudokuUI
 
         private void GenerateSolution()
         {
-            MessageBox.Show("Generating isn't implemented yet."); // TODO
-            SudokuViewer sv = new SudokuViewer();
+            SudokuGenerator sv = new SudokuGenerator();
             sv.Show();
         }
 

@@ -76,11 +76,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SudokuViewer.cs">
+    <Compile Include="SudokuGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SudokuViewer.Designer.cs">
-      <DependentUpon>SudokuViewer.cs</DependentUpon>
+    <Compile Include="SudokuGenerator.Designer.cs">
+      <DependentUpon>SudokuGenerator.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MainWindowForm.resx">
       <DependentUpon>MainWindowForm.cs</DependentUpon>
@@ -94,8 +94,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="SudokuViewer.resx">
-      <DependentUpon>SudokuViewer.cs</DependentUpon>
+    <EmbeddedResource Include="SudokuGenerator.resx">
+      <DependentUpon>SudokuGenerator.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
