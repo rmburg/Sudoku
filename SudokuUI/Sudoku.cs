@@ -31,7 +31,14 @@ namespace Sudoku
         }
 
     }
-    
+
+    public enum Difficulty
+    {
+        hard = 35,
+        medium = 50,
+        easy = 75
+    }
+
     public class Sudoku
     {
         const string divLine = "+-------+-------+-------+";
@@ -92,12 +99,6 @@ namespace Sudoku
             new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0},
         }, 9);
 
-        public enum Difficulty
-        {
-            hard = 35,
-            medium = 50,
-            easy = 75
-        }
 
         Difficulty MyDifficulty;
         public Grid grid;

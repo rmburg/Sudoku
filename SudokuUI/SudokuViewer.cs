@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Sudoku;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace SudokuUI
 {
@@ -11,8 +13,11 @@ namespace SudokuUI
     {
         public static Font font_cell_default = new Font("Verdana", 9f);
         public static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
-
+        Difficulty selectedDifficulty;
         public Grid internal_grid = new Grid(9);
+        public Grid temp_grid;
+        public List<Grid> possible_solutions;
+        bool filled = false;
 
         public SudokuViewer()
         {
@@ -84,16 +89,6 @@ namespace SudokuUI
             ui_grid[coords.y, coords.x].Style.Font = isPremade ? font_cell_bold : font_cell_default; //set font weight
         }
 
-        public void GenerateSolution()
-        {
-
-        }
-
-        public void GeneratePuzzle()
-        {
-
-        }
-
         private void SudokuViewer_Load(object sender, EventArgs e)
         {
 
@@ -123,10 +118,12 @@ namespace SudokuUI
                 internal_grid = new Grid(9);
                 UpdateGrid();
                 GenerateSolutionRecursive();
+                filled = true;
             }
             else
             {
-                MessageBox.Show("generating a solution isn't implemented yet."); // TODO
+                MessageBox.Show("selected difficulty: " + selectedDifficulty);
+                GeneratePuzzle(selectedDifficulty);
             }
         }
 
@@ -158,9 +155,109 @@ namespace SudokuUI
             }
         }
 
-        public void GeneratePuzzleRecursive()
+        public void GeneratePuzzle(Difficulty difficulty)
         {
-            // TODO
+            if (!filled)
+            {
+                MessageBox.Show("generate a solution first.");
+                return;
+            }
+            temp_grid = internal_grid.Clone();
+            List<Coords> cells = new List<Coords>();
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    cells.Add(new Coords(i, j));
+                }
+            }
+            cells = Lib.Shuffle(cells);
+            while (cells.Count > 0)
+            {
+                UniquenessChecker uc = new UniquenessChecker();
+                int removedCellvalue = temp_grid.Get(cells[0]);
+                Coords removedCell = cells[0];
+                //MessageBox.Show($"cell: {removedCell.x}, {removedCell.y}: {removedCellvalue}");
+                temp_grid.Set(cells[0], 0);
+                cells.RemoveAt(0);
+                if (!uc.Check(temp_grid))
+                {
+                    //MessageBox.Show($"resetting {removedCell.x}, {removedCell.y}: {removedCellvalue}");
+                    temp_grid.Set(removedCell, removedCellvalue);
+                }
+            }
+            internal_grid = temp_grid.Clone();
+            UpdateGrid();
+        }
+
+        public void GeneratePuzzleRecursive(Difficulty difficulty)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            buttonGenPuzzle.Enabled = true;
+            switch (listBox1.SelectedIndex)
+            {
+                case 0:
+                    selectedDifficulty = Difficulty.easy;
+                    break;
+                case 1:
+                    selectedDifficulty = Difficulty.medium;
+                    break;
+                case 2:
+                    selectedDifficulty = Difficulty.hard;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            OpenSaveDialog();
+        }
+
+        public Grid MakePremade(Grid input)
+        {
+            Grid output = input.Clone();
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    Coords coords = new Coords(i, j);
+                    output.Set(coords, -Math.Abs(output.Get(coords)));
+                }
+            }
+            return output;
+        }
+
+        public void SaveSudokuFile(string path)
+        {
+            File.WriteAllText(path, JsonConvert.SerializeObject(MakePremade(internal_grid).GetGrid()));
+        }
+
+        void OpenSaveDialog()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.InitialDirectory = Application.StartupPath;
+            saveFileDialog.Filter = "sudoku files (*.sudoku)|*.sudoku|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 0;
+            saveFileDialog.RestoreDirectory = false;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    SaveSudokuFile(saveFileDialog.FileName);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error: " + e.Message, "An error has occured");
+                }
+            }
         }
     }
 }

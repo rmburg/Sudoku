@@ -391,11 +391,14 @@ namespace SudokuUI
             else
             {
                 SolveRecursive(false);
-                MessageBox.Show(possible_solutions.Count == 0 ? "No solutions was found." : "A solution was found.");
                 if (possible_solutions.Count > 0)
                 {
                     internal_grid = possible_solutions[0];
                     UpdateGrid();
+                }
+                else
+                {
+                    MessageBox.Show("No solution was found.");
                 }
             }
         }
@@ -417,6 +420,14 @@ namespace SudokuUI
                 worker_solve.RunWorkerAsync(true);
             }
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            if (ModifierKeys == Keys.Control)
+            {
+                MessageBox.Show("Secret!");
+            }
+        }
     }
 
     public class UIgrid : DataGridView // derived class just to avoid the standard behavior of keys like enter, tab and back
@@ -428,6 +439,53 @@ namespace SudokuUI
                 e.Handled = true;
             }
             base.OnKeyDown(e);
+        }
+    }
+    public class UniquenessChecker
+    {
+        public bool solutionFound = false;
+        public bool secondSolFound = false;
+        Grid grid_to_check;
+        public bool Check(Grid grid)
+        {
+            grid_to_check = grid.Clone();
+            CheckUniqueRecursive();
+            return (solutionFound && !secondSolFound);
+        }
+
+        private void CheckUniqueRecursive()
+        {
+            if (!secondSolFound)
+            {
+                if (!grid_to_check.ContainsZeros()) // if it is fully solved
+                {
+                    if (solutionFound)
+                    {
+                        secondSolFound = true;
+                        return;
+                    }
+                    solutionFound = true;
+                    return;
+                }
+                else
+                {
+                    // find the first empty cell
+                    Coords emptyCell = grid_to_check.GetFirstEmptyCell();
+
+                    // get all possibilities for the first empty cell
+                    List<int> possibilities = grid_to_check.GetAllPossibilities(emptyCell);
+
+                    foreach (int item in possibilities) // try each possible number
+                    {
+                        grid_to_check.Set(emptyCell, item);
+
+                        CheckUniqueRecursive(); // if the next fuction call returns true (has found a solution)
+                    }
+                    //backtrack
+                    grid_to_check.Set(emptyCell, 0);
+                    return;
+                }
+            }
         }
     }
 }
