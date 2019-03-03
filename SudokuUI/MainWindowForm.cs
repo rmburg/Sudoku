@@ -9,20 +9,10 @@ using System.Collections.Generic;
 
 namespace SudokuUI
 {
-    public struct Tag
-    {
-        public bool premade;
-        public Tag(bool premade)
-        {
-            this.premade = premade;
-        }
-    }
-
     public partial class MainWindowForm : Form
     {
-        static Font font_cell_default = new Font("Verdana", 9f);
-        static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
-        public static DataGridViewCellStyle style_premade = new DataGridViewCellStyle();
+        public static Font font_cell_default = new Font("Verdana", 9f);
+        public static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
         public Grid internal_grid = new Grid(9);
 
         List<Grid> possible_solutions = new List<Grid>();
@@ -92,19 +82,19 @@ namespace SudokuUI
                 {
                     if (internal_grid.Get(i, j) == 0)
                     {
-                        ui_grid[i, j].Value = null;
+                        ui_grid[j, i].Value = null;
                         MarkPremade(new Coords(i, j), false);
                     }
                     else
                     {
                         if (internal_grid.Get(i, j) < 0) // if it is a "premade" cell
                         {
-                            ui_grid[i, j].Value = - internal_grid.Get(i, j);
+                            ui_grid[j, i].Value = - internal_grid.Get(i, j);
                             MarkPremade(new Coords(i, j), true);
                         }
                         else
                         {
-                            ui_grid[i, j].Value = internal_grid.Get(i, j);
+                            ui_grid[j, i].Value = internal_grid.Get(i, j);
                             MarkPremade(new Coords(i, j), false);
                         }
                     }
@@ -115,20 +105,35 @@ namespace SudokuUI
         private void GenerateSolution()
         {
             MessageBox.Show("Generating isn't implemented yet."); // TODO
+            SudokuViewer sv = new SudokuViewer();
+            sv.Show();
         }
 
         private void SelectionUpdate(object sender, EventArgs e)
         {
-            DataGridView datagrid = (DataGridView)sender;
-            Coords pos = new Coords();
-            pos.x = datagrid.CurrentCell.ColumnIndex;
-            pos.y = datagrid.CurrentCell.RowIndex;
+            //set all colors to normal
+            //set all numbers that are the same as the selected one to e.g. blue
         }
 
         public void SetCell(Coords coords, int value)
         {
             internal_grid.Set(coords, value);
             UpdateGrid();
+        }
+
+        public void UserSetCell(Coords coords, int value)
+        {
+            SetCell(coords, value);
+            if (!internal_grid.ContainsZeros())
+            {
+                bool correct = internal_grid.IsValid();
+                GridComplete(correct);
+            }
+        }
+
+        public void GridComplete(bool correct)
+        {
+            MessageBox.Show(correct?"Congratulations! You found a valid solution.":"Sadly, this solution is not correct.");
         }
 
         public DataGridViewCell GetCell(Coords coords)
@@ -142,7 +147,7 @@ namespace SudokuUI
             {
                 if (internal_grid.Get(CurrentCellCoords()) >= 0) // if it is not a premade cell
                 {
-                    SetCell(CurrentCellCoords(), 0);
+                    UserSetCell(CurrentCellCoords(), 0);
                     return;
                 }
                 return;
@@ -150,7 +155,7 @@ namespace SudokuUI
             string btnText = ((Button)sender).Text;
             if (internal_grid.Get(CurrentCellCoords()) >= 0)
             {
-                SetCell(CurrentCellCoords(), int.Parse(btnText));
+                UserSetCell(CurrentCellCoords(), int.Parse(btnText));
             }
         }
 
@@ -176,7 +181,6 @@ namespace SudokuUI
                     }
                 }
             }
-            UpdateGrid();
         }
 
         void ClearGridAll()
@@ -188,7 +192,6 @@ namespace SudokuUI
                     SetCell(new Coords(i, j), 0);
                 }
             }
-            UpdateGrid();
         }
 
         private void ResetEvent(object sender, EventArgs e)
@@ -226,20 +229,19 @@ namespace SudokuUI
             {
                 if (e.KeyChar == (char)Keys.Back || e.KeyChar == '0')
                 {
-                    SetCell(CurrentCellCoords(), 0);
+                    UserSetCell(CurrentCellCoords(), 0);
                     return;
                 }
                 if (allowed.Contains(e.KeyChar))
                 {
-                    SetCell(CurrentCellCoords(), int.Parse("" + e.KeyChar));
+                    UserSetCell(CurrentCellCoords(), int.Parse("" + e.KeyChar));
                 }
             }
         }
 
         private void MarkPremade(Coords coords, bool isPremade)
         {
-            ui_grid[coords.x, coords.y].Tag = new Tag(isPremade); // mark as premade
-            ui_grid[coords.x, coords.y].Style.Font = isPremade?font_cell_bold:font_cell_default; //set font weight
+            ui_grid[coords.y, coords.x].Style.Font = isPremade?font_cell_bold:font_cell_default; //set font weight
         }
 
         public void LoadSudokuFile(string path)

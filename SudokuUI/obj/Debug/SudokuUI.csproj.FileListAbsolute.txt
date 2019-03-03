@@ -12,3 +12,4 @@ C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.CopyComplete
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.MainWindowForm.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.SudokuViewer.resources

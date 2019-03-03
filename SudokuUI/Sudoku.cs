@@ -122,12 +122,6 @@ namespace Sudoku
             return gen.Generate();
         }
 
-        public static Grid GenerateRandomSolution(Action<int> update_ui)
-        {
-            Generator gen = new Generator();
-            return gen.Generate(update_ui);
-        }
-
         public static Grid GeneratePuzzle(Grid solution, Difficulty difficulty)
         {
             Grid puzzle;
@@ -366,7 +360,7 @@ namespace Sudoku
                 for (int j = 0; j < 9; j++)
                 {
                     Coords coords = new Coords(i, j);
-                    if (!(GetAllPossibilities(coords).Contains(Get(coords)) || Get(coords) == 0)) // check if each number is valid or zero. If not, return false
+                    if (!(GetAllPossibilities(coords).Contains(Math.Abs(Get(coords))) || Get(coords) == 0)) // check if each number is valid or zero. If not, return false
                     {
                         return false;
                     }
@@ -524,67 +518,23 @@ namespace Sudoku
                 input.Set(emptyCell.x, emptyCell.y, 0);
             }
         }
-
-        public Grid Generate(Action<int> update_ui)
-        {
-            done = false;
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            temp_grid = new Grid(9);
-            GenerateRecursive(temp_grid);
-
-            watch.Stop();
-
-            double elapsedSeconds = watch.ElapsedMilliseconds / 1000d;
-            //TODO: use time
-            return outGrid;
-        }
-
-        public void GenerateRecursive(Grid input, Action<int> update_ui)
-        {
-            if (!input.ContainsZeros()) // if it is fully solved
-            {
-                outGrid = input.Clone();
-                done = true;
-                return;
-            }
-            else
-            {
-                // find the first empty cell
-                Coords emptyCell = input.GetFirstEmptyCell();
-
-                // get all possibilities for (x, y)
-                List<int> possibilities = Shuffle(input.GetAllPossibilities(emptyCell));
-                foreach (int item in possibilities)
-                {
-                    input.Set(emptyCell.x, emptyCell.y, item);
-
-                    update_ui((emptyCell.x * 9 + emptyCell.y) * 100 / 80);
-
-                    GenerateRecursive(input);
-                    if (done)
-                    {
-                        return;
-                    }
-                }
-                //backtrack
-                input.Set(emptyCell.x, emptyCell.y, 0);
-            }
-        }
     }
     public static class Lib
     {
-        public static List<T> Shuffle<T>(List<T> list)
+        public static List<E> Shuffle<E>(List<E> inputList)
         {
-            Random rnd = new Random();
-            for (int i = 0; i < list.Count; i++)
+            List<E> randomList = new List<E>();
+
+            Random r = new Random();
+            int randomIndex = 0;
+            while (inputList.Count > 0)
             {
-                int k = rnd.Next(0, i);
-                T value = list[k];
-                list[k] = list[i];
-                list[i] = value;
+                randomIndex = r.Next(0, inputList.Count); //Choose a random object in the list
+                randomList.Add(inputList[randomIndex]); //add it to the new, random list
+                inputList.RemoveAt(randomIndex); //remove to avoid duplicates
             }
-            return list;
+
+            return randomList; //return the new random list
         }
     }
 }

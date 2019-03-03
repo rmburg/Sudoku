@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SudokuUI
@@ -16,6 +13,7 @@ namespace SudokuUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            MessageBox.Show("This program is still in development. Unfinished stuff and bugs ahead.");
             Application.Run(args.Length == 0 ? new MainWindowForm(string.Empty) : new MainWindowForm(args[0]));
         }
     }
