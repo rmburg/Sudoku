@@ -334,11 +334,9 @@ namespace SudokuUI
 
         public bool SolveRecursive(bool findAll)
         {
-            bool done = false;
             if (!internal_grid.ContainsZeros()) // if it is fully solved
             {
                 possible_solutions.Add(internal_grid.Clone());
-                done = true;
                 return true;
             }
             else
@@ -360,7 +358,9 @@ namespace SudokuUI
                 {
                     //MessageBox.Show($"setting ({emptyCell.x}, {emptyCell.y}) to {item}. possibs are {possibs_string}");
                     SetCell(emptyCell, item);
-                    if (SolveRecursive(findAll)) // if the next fuction call returns true (has found a solution)
+
+                    bool solutionFound = SolveRecursive(findAll); // if the next fuction call returns true (has found a solution)
+                    if (solutionFound && !findAll) // if only one solution should be found, return after one is found
                     {
                         return true;
                     }
@@ -374,6 +374,8 @@ namespace SudokuUI
         private void worker_solve_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             bool findAll = (bool)e.Argument;
+            possible_solutions.Clear(); // reset the list of possible solutions
+
             if (findAll) // if the user wats to find all solutions
             {
                 SolveRecursive(true);
