@@ -113,6 +113,7 @@ namespace SudokuUI
                 bgW_GenSolution.RunWorkerAsync(false);
             }
             buttonGenPuzzle.Enabled = false;
+            listBox1.Enabled = false;
         }
 
         private void bgW_GenSolution_DoWork(object sender, DoWorkEventArgs e)

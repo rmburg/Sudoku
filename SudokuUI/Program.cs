@@ -13,7 +13,6 @@ namespace SudokuUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MessageBox.Show("This program is still in development. Unfinished stuff and bugs ahead.");
             Application.Run(args.Length == 0 ? new MainWindowForm(string.Empty) : new MainWindowForm(args[0]));
         }
     }

@@ -57,16 +57,7 @@ namespace SudokuUI
             ui_grid.GridColor = Color.Black;
             ui_grid.Font = font_cell_default;
             // apply background pattern
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if ((i < 3 || i > 5) ^ (j < 3 || j > 5)) // 3x3 checkerboard pattern
-                    {
-                        ui_grid[i, j].Style.BackColor = Color.DarkGray;
-                    }
-                }
-            }
+            SetColorsDefault();
 
             if (arg != string.Empty)
             {
@@ -108,11 +99,53 @@ namespace SudokuUI
             sv.Show();
         }
 
+        private void SetColorsDefault()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if ((i < 3 || i > 5) ^ (j < 3 || j > 5)) // 3x3 checkerboard pattern
+                    {
+                        ui_grid[i, j].Style.BackColor = Color.DarkGray;
+                    }
+                    else
+                    {
+                        ui_grid[i, j].Style.BackColor = Color.White;
+                    }
+                }
+            }
+        }
+
+        private void UpdateHighlightColors()
+        {
+            if (!(bool)Properties.Settings.Default["ColorHelpEnabled"])
+            {
+                SetColorsDefault();
+                return;
+            }
+            //set all colors to normal
+            SetColorsDefault();
+            //set all numbers that are the same as the selected one to e.g. blue
+            int selectedNum = Math.Abs(internal_grid.Get(CurrentCellCoords()));
+            if (selectedNum != 0)
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        if (Math.Abs(internal_grid.Get(new Coords(i, j))) == selectedNum)
+                        {
+                            ui_grid[j, i].Style.BackColor = Color.LightBlue;
+                        }
+                    }
+                }
+            }
+        }
+
         private void SelectionUpdate(object sender, EventArgs e)
         {
-            //TODO:
-            //set all colors to normal
-            //set all numbers that are the same as the selected one to e.g. blue
+            UpdateHighlightColors();
         }
 
         public void SetCell(Coords coords, int value)
@@ -129,6 +162,7 @@ namespace SudokuUI
                 bool correct = internal_grid.IsValid();
                 GridComplete(correct);
             }
+            UpdateHighlightColors();
         }
 
         public void GridComplete(bool correct)
@@ -421,6 +455,12 @@ namespace SudokuUI
                 MessageBox.Show("Secret!");
             }
         }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsMenu sm = new SettingsMenu();
+            sm.ShowDialog();
+        }
     }
 
     public class UIgrid : DataGridView // derived class just to avoid the standard behavior of keys like enter, tab and back
@@ -434,6 +474,7 @@ namespace SudokuUI
             base.OnKeyDown(e);
         }
     }
+
     public class UniquenessChecker
     {
         public bool solutionFound = false;

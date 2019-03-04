@@ -253,8 +253,10 @@
             this.Controls.Add(this.ui_grid);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "SudokuGenerator";
-            this.Text = "Sudoku Genarator";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Text = "Sudoku Generator";
             this.Load += new System.EventHandler(this.SudokuViewer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).EndInit();
             this.ResumeLayout(false);

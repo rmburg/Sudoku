@@ -67,6 +67,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SettingsMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsMenu.Designer.cs">
+      <DependentUpon>SettingsMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sudoku.cs" />
     <Compile Include="MainWindowForm.cs">
       <SubType>Form</SubType>
@@ -94,6 +100,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SettingsMenu.resx">
+      <DependentUpon>SettingsMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SudokuGenerator.resx">
       <DependentUpon>SudokuGenerator.cs</DependentUpon>
     </EmbeddedResource>

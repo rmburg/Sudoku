@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindowForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.worker_solve = new System.ComponentModel.BackgroundWorker();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,18 +46,18 @@
             this.findAllSolutionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateASudokuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonRemove = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.worker_solve = new System.ComponentModel.BackgroundWorker();
+            this.button7 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.buttonRemove = new System.Windows.Forms.Button();
             this.ui_grid = new SudokuUI.UIgrid();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -84,6 +85,10 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(297, 434);
             this.panel1.TabIndex = 1;
+            // 
+            // worker_solve
+            // 
+            this.worker_solve.DoWork += new System.ComponentModel.DoWorkEventHandler(this.worker_solve_DoWork);
             // 
             // splitContainer1
             // 
@@ -138,17 +143,24 @@
             // 
             // loadSudokuToolStripMenuItem
             // 
+            this.loadSudokuToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("loadSudokuToolStripMenuItem.Image")));
+            this.loadSudokuToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.loadSudokuToolStripMenuItem.Name = "loadSudokuToolStripMenuItem";
+            this.loadSudokuToolStripMenuItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.loadSudokuToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.loadSudokuToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.loadSudokuToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.loadSudokuToolStripMenuItem.Size = new System.Drawing.Size(195, 30);
             this.loadSudokuToolStripMenuItem.Text = "Load sudoku";
             this.loadSudokuToolStripMenuItem.Click += new System.EventHandler(this.loadSudokuToolStripMenuItem_Click);
             // 
             // saveSudokuToolStripMenuItem
             // 
+            this.saveSudokuToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveSudokuToolStripMenuItem.Image")));
+            this.saveSudokuToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.saveSudokuToolStripMenuItem.Name = "saveSudokuToolStripMenuItem";
+            this.saveSudokuToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.saveSudokuToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveSudokuToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveSudokuToolStripMenuItem.Size = new System.Drawing.Size(195, 30);
             this.saveSudokuToolStripMenuItem.Text = "Save sudoku";
             this.saveSudokuToolStripMenuItem.Click += new System.EventHandler(this.saveSudokuToolStripMenuItem_Click);
             // 
@@ -166,21 +178,27 @@
             this.clearGridToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.leavePremadeNumbersToolStripMenuItem,
             this.clearAllNumbersToolStripMenuItem});
+            this.clearGridToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("clearGridToolStripMenuItem1.Image")));
+            this.clearGridToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.clearGridToolStripMenuItem1.Name = "clearGridToolStripMenuItem1";
-            this.clearGridToolStripMenuItem1.Size = new System.Drawing.Size(126, 22);
+            this.clearGridToolStripMenuItem1.Size = new System.Drawing.Size(188, 30);
             this.clearGridToolStripMenuItem1.Text = "Clear grid";
             // 
             // leavePremadeNumbersToolStripMenuItem
             // 
+            this.leavePremadeNumbersToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("leavePremadeNumbersToolStripMenuItem.Image")));
+            this.leavePremadeNumbersToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.leavePremadeNumbersToolStripMenuItem.Name = "leavePremadeNumbersToolStripMenuItem";
-            this.leavePremadeNumbersToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.leavePremadeNumbersToolStripMenuItem.Text = "Leave premade numbers";
+            this.leavePremadeNumbersToolStripMenuItem.Size = new System.Drawing.Size(245, 30);
+            this.leavePremadeNumbersToolStripMenuItem.Text = "Clear only user-made numbers";
             this.leavePremadeNumbersToolStripMenuItem.Click += new System.EventHandler(this.leavePremadeNumbersToolStripMenuItem_Click);
             // 
             // clearAllNumbersToolStripMenuItem
             // 
+            this.clearAllNumbersToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("clearAllNumbersToolStripMenuItem.Image")));
+            this.clearAllNumbersToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.clearAllNumbersToolStripMenuItem.Name = "clearAllNumbersToolStripMenuItem";
-            this.clearAllNumbersToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.clearAllNumbersToolStripMenuItem.Size = new System.Drawing.Size(245, 30);
             this.clearAllNumbersToolStripMenuItem.Text = "Clear all numbers";
             this.clearAllNumbersToolStripMenuItem.Click += new System.EventHandler(this.clearAllNumbersToolStripMenuItem_Click);
             // 
@@ -189,38 +207,83 @@
             this.solveGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.findOneSolutionToolStripMenuItem,
             this.findAllSolutionsToolStripMenuItem});
+            this.solveGridToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("solveGridToolStripMenuItem.Image")));
+            this.solveGridToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.solveGridToolStripMenuItem.Name = "solveGridToolStripMenuItem";
-            this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
             this.solveGridToolStripMenuItem.Text = "Solve grid";
             // 
             // findOneSolutionToolStripMenuItem
             // 
+            this.findOneSolutionToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findOneSolutionToolStripMenuItem.Image")));
+            this.findOneSolutionToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.findOneSolutionToolStripMenuItem.Name = "findOneSolutionToolStripMenuItem";
-            this.findOneSolutionToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.findOneSolutionToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
             this.findOneSolutionToolStripMenuItem.Text = "Find 1 solution";
             this.findOneSolutionToolStripMenuItem.Click += new System.EventHandler(this.findOneSolutionToolStripMenuItem_Click);
             // 
             // findAllSolutionsToolStripMenuItem
             // 
+            this.findAllSolutionsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findAllSolutionsToolStripMenuItem.Image")));
+            this.findAllSolutionsToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.findAllSolutionsToolStripMenuItem.Name = "findAllSolutionsToolStripMenuItem";
-            this.findAllSolutionsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.findAllSolutionsToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
             this.findAllSolutionsToolStripMenuItem.Text = "Find all solutions";
             this.findAllSolutionsToolStripMenuItem.Click += new System.EventHandler(this.findAllSolutionsToolStripMenuItem_Click);
             // 
             // extrasToolStripMenuItem
             // 
             this.extrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.generateASudokuToolStripMenuItem});
+            this.generateASudokuToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.extrasToolStripMenuItem.Name = "extrasToolStripMenuItem";
             this.extrasToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.extrasToolStripMenuItem.Text = "Extras";
             // 
             // generateASudokuToolStripMenuItem
             // 
+            this.generateASudokuToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("generateASudokuToolStripMenuItem.Image")));
+            this.generateASudokuToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.generateASudokuToolStripMenuItem.Name = "generateASudokuToolStripMenuItem";
-            this.generateASudokuToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.generateASudokuToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
             this.generateASudokuToolStripMenuItem.Text = "Generate a sudoku";
             this.generateASudokuToolStripMenuItem.Click += new System.EventHandler(this.generateASudokuToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("settingsToolStripMenuItem.Image")));
+            this.settingsToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // buttonRemove
+            // 
+            this.buttonRemove.Location = new System.Drawing.Point(203, 39);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(35, 35);
+            this.buttonRemove.TabIndex = 9;
+            this.buttonRemove.Text = "X";
+            this.buttonRemove.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(167, 39);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(35, 35);
+            this.button9.TabIndex = 8;
+            this.button9.Text = "9";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(131, 39);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(35, 35);
+            this.button8.TabIndex = 7;
+            this.button8.Text = "8";
+            this.button8.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -232,9 +295,14 @@
             this.label1.Text = "© Rasmus Mecklenburg 2019";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // worker_solve
+            // button7
             // 
-            this.worker_solve.DoWork += new System.ComponentModel.DoWorkEventHandler(this.worker_solve_DoWork);
+            this.button7.Location = new System.Drawing.Point(95, 39);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(35, 35);
+            this.button7.TabIndex = 6;
+            this.button7.Text = "7";
+            this.button7.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -245,6 +313,15 @@
             this.button1.Text = "1";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(59, 39);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(35, 35);
+            this.button6.TabIndex = 5;
+            this.button6.Text = "6";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(95, 3);
@@ -253,6 +330,15 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "2";
             this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(203, 3);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(35, 35);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "5";
+            this.button5.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -271,60 +357,6 @@
             this.button4.TabIndex = 3;
             this.button4.Text = "4";
             this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(203, 3);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(35, 35);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "5";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(59, 39);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(35, 35);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "6";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(95, 39);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(35, 35);
-            this.button7.TabIndex = 6;
-            this.button7.Text = "7";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(131, 39);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(35, 35);
-            this.button8.TabIndex = 7;
-            this.button8.Text = "8";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(167, 39);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(35, 35);
-            this.button9.TabIndex = 8;
-            this.button9.Text = "9";
-            this.button9.UseVisualStyleBackColor = true;
-            // 
-            // buttonRemove
-            // 
-            this.buttonRemove.Location = new System.Drawing.Point(203, 39);
-            this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(35, 35);
-            this.buttonRemove.TabIndex = 9;
-            this.buttonRemove.Text = "X";
-            this.buttonRemove.UseVisualStyleBackColor = true;
             // 
             // ui_grid
             // 
@@ -523,6 +555,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 
