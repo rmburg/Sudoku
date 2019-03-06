@@ -7,11 +7,11 @@ A program made just for fun within ~10 days using C# and Windows Forms.
     -  "number highlighting" included, as an option
     -  only keyboard / only mouse input both supported
   
--  solve sudokus
+-  Solve sudokus
     -  you can even enter your own sudokus to get their solution(s)!
   
--  generate sudokus
+-  Generate sudokus
     -  multiple difficulties
   
--  save/load sudokus to/from a file
+-  Save/load sudokus to/from a file
     -  "open with..."-feature supported
