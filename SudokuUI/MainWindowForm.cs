@@ -37,16 +37,16 @@ namespace SudokuUI
             ui_grid.RowTemplate.Height = 30;
             
             //add event handlers to buttons
-            button1.Click += new EventHandler(ButtonClick);
-            button2.Click += new EventHandler(ButtonClick);
-            button3.Click += new EventHandler(ButtonClick);
-            button4.Click += new EventHandler(ButtonClick);
-            button5.Click += new EventHandler(ButtonClick);
-            button6.Click += new EventHandler(ButtonClick);
-            button7.Click += new EventHandler(ButtonClick);
-            button8.Click += new EventHandler(ButtonClick);
-            button9.Click += new EventHandler(ButtonClick);
-            buttonRemove.Click += new EventHandler(ButtonClick);
+            button1.Click += ButtonClick;
+            button2.Click += ButtonClick;
+            button3.Click += ButtonClick;
+            button4.Click += ButtonClick;
+            button5.Click += ButtonClick;
+            button6.Click += ButtonClick;
+            button7.Click += ButtonClick;
+            button8.Click += ButtonClick;
+            button9.Click += ButtonClick;
+            buttonRemove.Click += ButtonClick;
 
             ui_grid.SelectionChanged += new EventHandler(SelectionUpdate);
             ui_grid.KeyPress += new KeyPressEventHandler(KeyPressEvent);
@@ -445,8 +445,8 @@ namespace SudokuUI
 
     public class UniquenessChecker
     {
-        public bool solutionFound = false;
-        public bool secondSolFound = false;
+        bool solutionFound = false;
+        bool secondSolFound = false;
         Grid grid_to_check;
         public bool Check(Grid grid)
         {
@@ -485,7 +485,6 @@ namespace SudokuUI
                     }
                     //backtrack
                     grid_to_check.Set(emptyCell, 0);
-                    return;
                 }
             }
         }
