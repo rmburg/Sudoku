@@ -6,6 +6,7 @@ using Sudoku;
 using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using static SudokuUI.Lib;
 
 namespace SudokuUI
 {
@@ -93,12 +94,6 @@ namespace SudokuUI
             }
         }
 
-        private void GenerateSolution()
-        {
-            SudokuGenerator sv = new SudokuGenerator();
-            sv.Show();
-        }
-
         private void SetColorsDefault()
         {
             for (int i = 0; i < 9; i++)
@@ -143,6 +138,7 @@ namespace SudokuUI
             }
         }
 
+        // called when a new cell is selected
         private void SelectionUpdate(object sender, EventArgs e)
         {
             UpdateHighlightColors();
@@ -154,6 +150,7 @@ namespace SudokuUI
             UpdateGrid();
         }
 
+        //for doing additional stuff when the user sets a cell (so not while loading, solving etc...)
         public void UserSetCell(Coords coords, int value)
         {
             SetCell(coords, value);
@@ -170,11 +167,6 @@ namespace SudokuUI
             MessageBox.Show(correct?"Congratulations! You found a valid solution.":"Sadly, this solution is not correct.");
         }
 
-        public DataGridViewCell GetCell(Coords coords)
-        {
-            return ui_grid[coords.x, coords.y];
-        }
-
         private void ButtonClick(object sender, EventArgs e)
         {
             if (sender == buttonRemove)
@@ -189,7 +181,7 @@ namespace SudokuUI
             string btnText = ((Button)sender).Text;
             if (internal_grid.Get(CurrentCellCoords()) >= 0)
             {
-                UserSetCell(CurrentCellCoords(), int.Parse(btnText));
+                UserSetCell(CurrentCellCoords(), int.Parse(btnText)); // bad bad bad i know i know i know
             }
         }
 
@@ -215,6 +207,7 @@ namespace SudokuUI
                     }
                 }
             }
+            UpdateHighlightColors();
         }
 
         void ClearGridAll()
@@ -226,34 +219,12 @@ namespace SudokuUI
                     SetCell(new Coords(i, j), 0);
                 }
             }
+            UpdateHighlightColors();
         }
 
         private void ResetEvent(object sender, EventArgs e)
         {
             ResetGrid();
-        }
-
-        void SetPremadeGrid(Grid grid)
-        {
-            internal_grid = new Grid(9);
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if (grid.Get(new Coords(j, i)) != 0)
-                    {
-                        SetCell(new Coords(i, j), -grid.Get(new Coords(j, i)));
-                        MarkPremade(new Coords(i, j), true);
-                    }
-                    else
-                    {
-                        SetCell(new Coords(i, j), 0);
-                        GetCell(new Coords(i, j)).Value = null;
-                        MarkPremade(new Coords(i, j), false);
-                    }
-                }
-            }
-            UpdateGrid();
         }
 
         private void KeyPressEvent(object sender, KeyPressEventArgs e)
@@ -281,13 +252,9 @@ namespace SudokuUI
         public void LoadSudokuFile(string path)
         {
             Grid deserialized_grid = new Grid(JsonConvert.DeserializeObject<int[][]>(File.ReadAllText(path)), 9);
-            internal_grid.SetGrid(deserialized_grid);
+            internal_grid = deserialized_grid;
             UpdateGrid();
-        }
-
-        public void SaveSudokuFile(string path)
-        {
-            File.WriteAllText(path, JsonConvert.SerializeObject(internal_grid.GetGrid()));
+            UpdateHighlightColors();
         }
 
         private void loadSudokuToolStripMenuItem_Click(object sender, EventArgs e)
@@ -336,7 +303,7 @@ namespace SudokuUI
             {
                 try
                 {
-                    SaveSudokuFile(saveFileDialog.FileName);
+                    SaveSudokuFile(internal_grid, saveFileDialog.FileName);
                 }
                 catch (Exception e)
                 {
@@ -365,7 +332,8 @@ namespace SudokuUI
 
         private void generateASudokuToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GenerateSolution();
+            SudokuGenerator sv = new SudokuGenerator();
+            sv.Show();
         }
 
         public bool SolveRecursive(bool findAll)

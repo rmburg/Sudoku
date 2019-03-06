@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Sudoku;
-using Newtonsoft.Json;
-using System.IO;
 
 namespace SudokuUI
 {
@@ -264,7 +262,7 @@ namespace SudokuUI
 
         public void SaveSudokuFileAsPremade(string path)
         {
-            File.WriteAllText(path, JsonConvert.SerializeObject(MakePremade(internal_grid).GetGrid()));
+            Lib.SaveSudokuFile(MakePremade(internal_grid), path);
         }
 
         void OpenSaveDialog()
