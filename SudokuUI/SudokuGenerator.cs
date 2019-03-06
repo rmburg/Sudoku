@@ -15,7 +15,7 @@ namespace SudokuUI
         public Grid internal_grid = new Grid(9);
         public Grid temp_grid;
         public List<Grid> possible_solutions;
-        bool filled = false;
+        bool filled;
 
         public SudokuGenerator()
         {
@@ -188,7 +188,7 @@ namespace SudokuUI
                     //MessageBox.Show($"resetting {removedCell.x}, {removedCell.y}: {removedCellvalue}");
                     temp_grid.Set(removedCell, removedCellvalue);
                 }
-                bgW_GenSolution.ReportProgress((int)(81 - cells.Count) * 100 / 81);
+                bgW_GenSolution.ReportProgress((81 - cells.Count) * 100 / 81);
             }
 
             List<Coords> emptyCells = new List<Coords>();
