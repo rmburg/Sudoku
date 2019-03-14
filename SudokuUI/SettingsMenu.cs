@@ -14,17 +14,7 @@ namespace SudokuUI
     {
         public SettingsMenu()
         {
-            InitializeComponent();
-            try
-            {
-                checkBox_ColorHelp.Checked = (bool)Properties.Settings.Default["ColorHelpEnabled"];
-                Properties.Settings.Default.Save();
-            }
-            catch (System.Configuration.SettingsPropertyNotFoundException)
-            {
-                Properties.Settings.Default["ColorHelpEnabled"] = true;
-                checkBox_ColorHelp.Checked = true;
-            }
+            InitializeComponent(); checkBox_ColorHelp.Checked = (bool)Properties.Settings.Default["ColorHelpEnabled"];
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)
