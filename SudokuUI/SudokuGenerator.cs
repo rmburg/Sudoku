@@ -15,14 +15,16 @@ namespace SudokuUI
         public Grid internal_grid = new Grid(9);
         public Grid temp_grid;
         public List<Grid> possible_solutions;
-        bool filled = false;
+        bool filled;
 
         public SudokuGenerator()
         {
             InitializeComponent();
 
+
+            // set up background worker
             bgW_GenSolution.WorkerReportsProgress = true;
-            bgW_GenSolution.ProgressChanged += new ProgressChangedEventHandler(ProgressUpdate);
+            bgW_GenSolution.ProgressChanged += ProgressUpdate;
 
             ui_grid.Rows.Add();
             ui_grid.Rows.Add();
@@ -51,50 +53,6 @@ namespace SudokuUI
             }
         }
 
-        public void SetCell(Coords coords, int value)
-        {
-            internal_grid.Set(coords, value);
-            UpdateGrid();
-        }
-
-        public void UpdateGrid() // put the values of the internal grid into the UI
-        {
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if (internal_grid.Get(i, j) == 0)
-                    {
-                        ui_grid[j, i].Value = null;
-                        MarkPremade(new Coords(i, j), false);
-                    }
-                    else
-                    {
-                        if (internal_grid.Get(i, j) < 0) // if it is a "premade" cell
-                        {
-                            ui_grid[j, i].Value = -internal_grid.Get(i, j);
-                            MarkPremade(new Coords(i, j), true);
-                        }
-                        else
-                        {
-                            ui_grid[j, i].Value = internal_grid.Get(i, j);
-                            MarkPremade(new Coords(i, j), false);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void MarkPremade(Coords coords, bool isPremade)
-        {
-            ui_grid[coords.y, coords.x].Style.Font = isPremade ? font_cell_bold : font_cell_default; //set font weight
-        }
-
-        private void SudokuViewer_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonGenSolution_Click(object sender, EventArgs e)
         {
             if (!bgW_GenSolution.IsBusy)
@@ -120,7 +78,7 @@ namespace SudokuUI
             if (solution)
             {
                 internal_grid = new Grid(9);
-                UpdateGrid();
+                ui_grid.UpdateGrid();
                 GenerateSolutionRecursive();
                 filled = true;
             }
@@ -145,7 +103,7 @@ namespace SudokuUI
                 List<int> possibilities = Lib.Shuffle(internal_grid.GetAllPossibilities(emptyCell));
                 foreach (int item in possibilities)
                 {
-                    SetCell(emptyCell, item);
+                    ui_grid.SetCell(emptyCell, item);
                     
                     if (GenerateSolutionRecursive()) // if the next method call reports that the grid is fully solved, do the same
                     {
@@ -153,7 +111,7 @@ namespace SudokuUI
                     }
                 }
                 //backtrack
-                SetCell(emptyCell, 0);
+                ui_grid.SetCell(emptyCell, 0);
                 return false;
             }
         }
@@ -188,7 +146,7 @@ namespace SudokuUI
                     //MessageBox.Show($"resetting {removedCell.x}, {removedCell.y}: {removedCellvalue}");
                     temp_grid.Set(removedCell, removedCellvalue);
                 }
-                bgW_GenSolution.ReportProgress((int)(81 - cells.Count) * 100 / 81);
+                bgW_GenSolution.ReportProgress((81 - cells.Count) * 100 / 81);
             }
 
             List<Coords> emptyCells = new List<Coords>();
@@ -213,7 +171,7 @@ namespace SudokuUI
             }
 
             internal_grid = temp_grid.Clone();
-            UpdateGrid();
+            ui_grid.UpdateGrid();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -243,7 +201,8 @@ namespace SudokuUI
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            OpenSaveDialog();
+
+            ui_grid.OpenSaveDialog();
         }
 
         public Grid MakePremade(Grid input)
@@ -262,29 +221,9 @@ namespace SudokuUI
 
         public void SaveSudokuFileAsPremade(string path)
         {
-            Lib.SaveSudokuFile(MakePremade(internal_grid), path);
-        }
-
-        void OpenSaveDialog()
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-            saveFileDialog.InitialDirectory = Application.StartupPath;
-            saveFileDialog.Filter = "sudoku files (*.sudoku)|*.sudoku|All files (*.*)|*.*";
-            saveFileDialog.FilterIndex = 0;
-            saveFileDialog.RestoreDirectory = false;
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    SaveSudokuFileAsPremade(saveFileDialog.FileName);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("Error: " + e.Message, "An error has occured");
-                }
-            }
+            internal_grid = MakePremade(internal_grid);
+            ui_grid.UpdateGrid();
+            ui_grid.SaveSudokuFile(path);
         }
 
         void ProgressUpdate(object sender, ProgressChangedEventArgs e)

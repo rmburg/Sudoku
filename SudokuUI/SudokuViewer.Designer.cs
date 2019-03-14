@@ -1,6 +1,6 @@
 ﻿namespace SudokuUI
 {
-    partial class SudokuGenerator
+    partial class SudokuViewer
     {
         /// <summary>
         /// Required designer variable.
@@ -28,14 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SudokuViewer));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SudokuGenerator));
-            this.buttonGenSolution = new System.Windows.Forms.Button();
-            this.buttonGenPuzzle = new System.Windows.Forms.Button();
-            this.bgW_GenSolution = new System.ComponentModel.BackgroundWorker();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.buttonSave = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.button_Next = new System.Windows.Forms.Button();
+            this.button_Prev = new System.Windows.Forms.Button();
             this.ui_grid = new SudokuUI.UIgrid();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,66 +46,29 @@
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).BeginInit();
             this.SuspendLayout();
             // 
-            // buttonGenSolution
+            // button_Next
             // 
-            this.buttonGenSolution.Location = new System.Drawing.Point(333, 12);
-            this.buttonGenSolution.Name = "buttonGenSolution";
-            this.buttonGenSolution.Size = new System.Drawing.Size(125, 23);
-            this.buttonGenSolution.TabIndex = 2;
-            this.buttonGenSolution.Text = "Generate a solution";
-            this.buttonGenSolution.UseVisualStyleBackColor = true;
-            this.buttonGenSolution.Click += new System.EventHandler(this.buttonGenSolution_Click);
+            this.button_Next.Image = ((System.Drawing.Image)(resources.GetObject("button_Next.Image")));
+            this.button_Next.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_Next.Location = new System.Drawing.Point(185, 301);
+            this.button_Next.Name = "button_Next";
+            this.button_Next.Size = new System.Drawing.Size(100, 23);
+            this.button_Next.TabIndex = 2;
+            this.button_Next.Text = "Next";
+            this.button_Next.UseVisualStyleBackColor = true;
+            this.button_Next.Click += new System.EventHandler(this.button_Next_Click);
             // 
-            // buttonGenPuzzle
+            // button_Prev
             // 
-            this.buttonGenPuzzle.Enabled = false;
-            this.buttonGenPuzzle.Location = new System.Drawing.Point(333, 116);
-            this.buttonGenPuzzle.Name = "buttonGenPuzzle";
-            this.buttonGenPuzzle.Size = new System.Drawing.Size(125, 23);
-            this.buttonGenPuzzle.TabIndex = 2;
-            this.buttonGenPuzzle.Text = "Generate a puzzle";
-            this.buttonGenPuzzle.UseVisualStyleBackColor = true;
-            this.buttonGenPuzzle.Click += new System.EventHandler(this.buttonGenPuzzle_Click);
-            // 
-            // bgW_GenSolution
-            // 
-            this.bgW_GenSolution.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgW_GenSolution_DoWork);
-            this.bgW_GenSolution.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgW_GenSolution_RunWorkerCompleted);
-            // 
-            // listBox1
-            // 
-            this.listBox1.Enabled = false;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "Very easy",
-            "Easy",
-            "Medium",
-            "Hard",
-            "Extreme"});
-            this.listBox1.Location = new System.Drawing.Point(333, 41);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(125, 69);
-            this.listBox1.TabIndex = 3;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
-            // buttonSave
-            // 
-            this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(333, 174);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(125, 23);
-            this.buttonSave.TabIndex = 2;
-            this.buttonSave.Text = "Save this sudoku";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Enabled = false;
-            this.progressBar1.Location = new System.Drawing.Point(333, 145);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(125, 23);
-            this.progressBar1.TabIndex = 4;
+            this.button_Prev.Image = ((System.Drawing.Image)(resources.GetObject("button_Prev.Image")));
+            this.button_Prev.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_Prev.Location = new System.Drawing.Point(12, 301);
+            this.button_Prev.Name = "button_Prev";
+            this.button_Prev.Size = new System.Drawing.Size(100, 23);
+            this.button_Prev.TabIndex = 2;
+            this.button_Prev.Text = "Previous";
+            this.button_Prev.UseVisualStyleBackColor = true;
+            this.button_Prev.Click += new System.EventHandler(this.button_Prev_Click);
             // 
             // ui_grid
             // 
@@ -116,6 +76,7 @@
             this.ui_grid.AllowUserToDeleteRows = false;
             this.ui_grid.AllowUserToResizeColumns = false;
             this.ui_grid.AllowUserToResizeRows = false;
+            this.ui_grid.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.ui_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.ui_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ui_grid.ColumnHeadersVisible = false;
@@ -129,14 +90,24 @@
             this.Column7,
             this.Column8,
             this.Column9});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 9F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ui_grid.DefaultCellStyle = dataGridViewCellStyle1;
             this.ui_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.ui_grid.Font = new System.Drawing.Font("Verdana", 9F);
+            this.ui_grid.GridColor = System.Drawing.Color.Black;
             this.ui_grid.Location = new System.Drawing.Point(12, 12);
             this.ui_grid.MultiSelect = false;
             this.ui_grid.Name = "ui_grid";
             this.ui_grid.ReadOnly = true;
             this.ui_grid.RowHeadersVisible = false;
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(1);
-            this.ui_grid.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(1);
+            this.ui_grid.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.ui_grid.RowTemplate.Height = 30;
             this.ui_grid.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.ui_grid.Size = new System.Drawing.Size(273, 273);
@@ -240,21 +211,21 @@
             this.Column9.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column9.Width = 30;
             // 
-            // SudokuGenerator
+            // SudokuViewer
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(498, 297);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.buttonGenPuzzle);
-            this.Controls.Add(this.buttonGenSolution);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(297, 336);
+            this.Controls.Add(this.button_Prev);
+            this.Controls.Add(this.button_Next);
             this.Controls.Add(this.ui_grid);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "SudokuGenerator";
-            this.Text = "Sudoku Generator";
+            this.Name = "SudokuViewer";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Sudoku Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).EndInit();
             this.ResumeLayout(false);
 
@@ -272,11 +243,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.Button buttonGenSolution;
-        private System.Windows.Forms.Button buttonGenPuzzle;
-        private System.ComponentModel.BackgroundWorker bgW_GenSolution;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button button_Next;
+        private System.Windows.Forms.Button button_Prev;
     }
 }

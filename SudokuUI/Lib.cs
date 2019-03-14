@@ -24,10 +24,5 @@ namespace SudokuUI
 
             return randomList; //return the new random list
         }
-
-        public static void SaveSudokuFile(Grid grid, string path)
-        {
-            File.WriteAllText(path, JsonConvert.SerializeObject(grid.GetGrid()));
-        }
     }
 }

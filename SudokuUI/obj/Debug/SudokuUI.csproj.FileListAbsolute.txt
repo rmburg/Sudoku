@@ -14,3 +14,5 @@ C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.csproj.CopyCom
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.MainWindowForm.resources
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.SudokuGenerator.resources
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.SettingsMenu.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.SudokuViewer.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Debug\SudokuUI.AboutPage.resources
