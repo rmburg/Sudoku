@@ -243,7 +243,6 @@ namespace SudokuUI
         {
             if (arg != string.Empty)
             {
-                MessageBox.Show("loading: " + arg);
                 ui_grid.LoadSudokuFile(arg);
             }
         }
