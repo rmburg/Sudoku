@@ -13,6 +13,7 @@ namespace SudokuUI
     public partial class MainWindowForm : Form
     {
         List<Grid> possible_solutions = new List<Grid>();
+        string arg;
 
         public MainWindowForm(string arg)
         {
@@ -45,14 +46,8 @@ namespace SudokuUI
 
             ui_grid.SelectionChanged += new EventHandler(SelectionUpdate);
             ui_grid.KeyPress += new KeyPressEventHandler(KeyPressEvent);
-            
 
-
-
-            if (arg != string.Empty)
-            {
-                ui_grid.LoadSudokuFile(arg);
-            }
+            this.arg = arg;
         }
 
         // called when a new cell is selected
@@ -242,6 +237,15 @@ namespace SudokuUI
         {
             AboutPage ap = new AboutPage();
             ap.ShowDialog();
+        }
+
+        private void MainWindowForm_Load(object sender, EventArgs e)
+        {
+            if (arg != string.Empty)
+            {
+                MessageBox.Show("loading: " + arg);
+                ui_grid.LoadSudokuFile(arg);
+            }
         }
     }
 

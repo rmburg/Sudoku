@@ -38,9 +38,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(197, 26);
+            this.label1.Size = new System.Drawing.Size(196, 26);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Made by Rasmus Mecklenburg.\r\nIcons provided by Icons8.com (Thanks!)\r\n";
+            this.label1.Text = "Made by Rasmus Mecklenburg.\r\nIcons provided by icons8.com (Thanks!)\r\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // linkLabel1

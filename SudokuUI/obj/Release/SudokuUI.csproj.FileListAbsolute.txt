@@ -14,3 +14,5 @@ C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.exe
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.pdb
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.SudokuGenerator.resources
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.SettingsMenu.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.AboutPage.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.SudokuViewer.resources

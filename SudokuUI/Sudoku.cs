@@ -177,7 +177,7 @@ namespace Sudoku
             List<int> rowP = GetRowPossibilities(coords);
             List<int> sqP = GetSquarePossibilities(coords);
 
-            List<int> intersect = lineP.Intersect(rowP).Intersect(sqP).ToList(); // alle nummern, die sowohl in der zeile, spalte und dem 3x3-Feld möglich sind
+            List<int> intersect = lineP.Intersect(rowP).Intersect(sqP).ToList(); // all numbers that are valid in the given row, column and 3x3 square
 
             return intersect;
         }
@@ -224,62 +224,6 @@ namespace Sudoku
             }
             return new Coords(-1, -1);
         }
-    }
-    public class Solver
-    {
-        List<Grid> possible_solutions;
-
-        public void SolveRecursive(Grid input)
-        {
-            if (!input.ContainsZeros()) // if it is fully solved
-            {
-                possible_solutions.Add(input.Clone());
-                return;
-            }
-            else
-            {
-                // find the first empty cell
-                Coords emptyCell = input.GetFirstEmptyCell();
-
-                // get all possibilities for (x, y)
-
-                List<int> possibilities = input.GetAllPossibilities(emptyCell);
-                foreach (int item in possibilities)
-                {
-                    input.Set(emptyCell.x, emptyCell.y, item);
-                    SolveRecursive(input);
-                }
-                //backtrack
-                input.Set(emptyCell.x, emptyCell.y, 0);
-            }
-        }
-
-        // a naive approach to solving; less capable but faster. not in use.
-        /*
-        public Grid SolveNaive(Grid input)
-        {
-            Grid output = input;
-            bool changed = false;
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if (output.GetAllPossibilities(new Coords(i, j)).Count == 1 && output.Get(i, j) == 0)
-                    {
-                        output.Set(i, j, input.GetAllPossibilities(new Coords(i, j))[0]);
-                        changed = true;
-                    }
-                }
-            }
-            if (!changed) // if nothing was changed
-            {
-                return output;
-            }
-            else
-            {
-                return SolveNaive(output);
-            }
-        }*/
     }
 }
 /*

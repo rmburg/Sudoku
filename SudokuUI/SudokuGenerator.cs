@@ -12,7 +12,6 @@ namespace SudokuUI
         public static Font font_cell_default = new Font("Verdana", 9f);
         public static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
         Difficulty selectedDifficulty;
-        public Grid internal_grid = new Grid(9);
         public Grid temp_grid;
         public List<Grid> possible_solutions;
         bool filled;
@@ -40,17 +39,9 @@ namespace SudokuUI
             ui_grid.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             ui_grid.GridColor = Color.Black;
             ui_grid.Font = font_cell_default;
+
             // apply background pattern
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if ((i < 3 || i > 5) ^ (j < 3 || j > 5)) // 3x3 checkerboard pattern
-                    {
-                        ui_grid[i, j].Style.BackColor = Color.DarkGray;
-                    }
-                }
-            }
+            ui_grid.SetColorsDefault();
         }
 
         private void buttonGenSolution_Click(object sender, EventArgs e)
@@ -77,7 +68,7 @@ namespace SudokuUI
             bool solution = (bool)e.Argument;
             if (solution)
             {
-                internal_grid = new Grid(9);
+                ui_grid.internal_grid = new Grid(9);
                 ui_grid.UpdateGrid();
                 GenerateSolutionRecursive();
                 filled = true;
@@ -90,17 +81,17 @@ namespace SudokuUI
 
         public bool GenerateSolutionRecursive()
         {
-            if (!internal_grid.ContainsZeros()) // if it is fully solved
+            if (!ui_grid.internal_grid.ContainsZeros()) // if it is fully solved
             {
                 return true;
             }
             else
             {
                 // find the first empty cell
-                Coords emptyCell = internal_grid.GetFirstEmptyCell();
+                Coords emptyCell = ui_grid.internal_grid.GetFirstEmptyCell();
 
                 // get all possibilities for (x, y)
-                List<int> possibilities = Lib.Shuffle(internal_grid.GetAllPossibilities(emptyCell));
+                List<int> possibilities = Lib.Shuffle(ui_grid.internal_grid.GetAllPossibilities(emptyCell));
                 foreach (int item in possibilities)
                 {
                     ui_grid.SetCell(emptyCell, item);
@@ -123,7 +114,7 @@ namespace SudokuUI
                 MessageBox.Show("generate a solution first.");
                 return;
             }
-            temp_grid = internal_grid.Clone();
+            temp_grid = ui_grid.internal_grid.Clone();
             List<Coords> cells = new List<Coords>();
             for (int i = 0; i < 9; i++)
             {
@@ -138,12 +129,10 @@ namespace SudokuUI
                 UniquenessChecker uc = new UniquenessChecker();
                 int removedCellvalue = temp_grid.Get(cells[0]);
                 Coords removedCell = cells[0];
-                //MessageBox.Show($"cell: {removedCell.x}, {removedCell.y}: {removedCellvalue}");
                 temp_grid.Set(cells[0], 0);
                 cells.RemoveAt(0);
                 if (!uc.Check(temp_grid))
                 {
-                    //MessageBox.Show($"resetting {removedCell.x}, {removedCell.y}: {removedCellvalue}");
                     temp_grid.Set(removedCell, removedCellvalue);
                 }
                 bgW_GenSolution.ReportProgress((81 - cells.Count) * 100 / 81);
@@ -165,12 +154,12 @@ namespace SudokuUI
             int numbers_added = 0;
             while (numbers_added < (int)difficulty)
             {
-                temp_grid.Set(emptyCells[0], internal_grid.Get(emptyCells[0])); // fill in a number from the solution
+                temp_grid.Set(emptyCells[0], ui_grid.internal_grid.Get(emptyCells[0])); // fill in a number from the solution
                 numbers_added++;
                 emptyCells.RemoveAt(0);
             }
 
-            internal_grid = temp_grid.Clone();
+            ui_grid.internal_grid = temp_grid.Clone();
             ui_grid.UpdateGrid();
         }
 
@@ -221,7 +210,7 @@ namespace SudokuUI
 
         public void SaveSudokuFileAsPremade(string path)
         {
-            internal_grid = MakePremade(internal_grid);
+            ui_grid.internal_grid = MakePremade(ui_grid.internal_grid);
             ui_grid.UpdateGrid();
             ui_grid.SaveSudokuFile(path);
         }
