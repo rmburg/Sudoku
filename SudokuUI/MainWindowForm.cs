@@ -103,7 +103,7 @@ namespace SudokuUI
 
         private void saveSudokuToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ui_grid.OpenSaveDialog();
+            ui_grid.Save();
         }
 
         private void leavePremadeNumbersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -470,7 +470,7 @@ namespace SudokuUI
             UpdateHighlightColors();
         }
 
-        public void OpenSaveDialog()
+        public void OpenSaveDialog(Grid grid)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
@@ -483,13 +483,23 @@ namespace SudokuUI
             {
                 try
                 {
-                    SaveSudokuFile(saveFileDialog.FileName);
+                    SaveSudokuFile(grid, saveFileDialog.FileName);
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show("Error: " + e.Message, "An error has occured");
                 }
             }
+        }
+
+        public void Save(Grid grid)
+        {
+            OpenSaveDialog(grid);
+        }
+
+        public void Save()
+        {
+            OpenSaveDialog(internal_grid);
         }
 
         public void OpenLoadDialog()
@@ -515,7 +525,7 @@ namespace SudokuUI
             }
         }
 
-        public void SaveSudokuFile(string path)
+        public void SaveSudokuFile(Grid grid, string path)
         {
             File.WriteAllText(path, JsonConvert.SerializeObject(internal_grid.GetGrid()));
         }

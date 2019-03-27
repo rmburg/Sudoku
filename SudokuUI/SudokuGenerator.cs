@@ -94,7 +94,7 @@ namespace SudokuUI
                 List<int> possibilities = Lib.Shuffle(ui_grid.internal_grid.GetAllPossibilities(emptyCell));
                 foreach (int item in possibilities)
                 {
-                    ui_grid.SetCell(emptyCell, item);
+                    ui_grid.SetCell(emptyCell, -item);
                     
                     if (GenerateSolutionRecursive()) // if the next method call reports that the grid is fully solved, do the same
                     {
@@ -190,8 +190,7 @@ namespace SudokuUI
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-
-            ui_grid.OpenSaveDialog();
+            ui_grid.Save();
         }
 
         public Grid MakePremade(Grid input)
@@ -206,13 +205,6 @@ namespace SudokuUI
                 }
             }
             return output;
-        }
-
-        public void SaveSudokuFileAsPremade(string path)
-        {
-            ui_grid.internal_grid = MakePremade(ui_grid.internal_grid);
-            ui_grid.UpdateGrid();
-            ui_grid.SaveSudokuFile(path);
         }
 
         void ProgressUpdate(object sender, ProgressChangedEventArgs e)
