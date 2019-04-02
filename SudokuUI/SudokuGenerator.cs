@@ -9,8 +9,6 @@ namespace SudokuUI
 {
     public partial class SudokuGenerator : Form
     {
-        public static Font font_cell_default = new Font("Verdana", 9f);
-        public static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
         Difficulty selectedDifficulty;
         public Grid temp_grid;
         public List<Grid> possible_solutions;
@@ -38,7 +36,7 @@ namespace SudokuUI
 
             ui_grid.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             ui_grid.GridColor = Color.Black;
-            ui_grid.Font = font_cell_default;
+            ui_grid.Font = UIgrid.font_cell_default;
 
             // apply background pattern
             ui_grid.SetColorsDefault();
@@ -51,6 +49,10 @@ namespace SudokuUI
                 bgW_GenSolution.RunWorkerAsync(true);
             }
             listBox1.Enabled = true;
+            if (listBox1.SelectedIndex != -1)
+            {
+                buttonGenPuzzle.Enabled = true;
+            }
         }
 
         private void buttonGenPuzzle_Click(object sender, EventArgs e)
@@ -61,6 +63,8 @@ namespace SudokuUI
             }
             buttonGenPuzzle.Enabled = false;
             listBox1.Enabled = false;
+            buttonGenSolution.Enabled = false;
+            buttonSave.Enabled = false;
         }
 
         private void bgW_GenSolution_DoWork(object sender, DoWorkEventArgs e)
@@ -215,6 +219,8 @@ namespace SudokuUI
         private void bgW_GenSolution_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             progressBar1.Value = 0;
+            buttonSave.Enabled = true;
+            buttonGenSolution.Enabled = true;
             buttonSave.Enabled = true;
         }
     }

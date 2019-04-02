@@ -6,7 +6,6 @@ using Sudoku;
 using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using static SudokuUI.Lib;
 
 namespace SudokuUI
 {
@@ -14,10 +13,13 @@ namespace SudokuUI
     {
         List<Grid> possible_solutions = new List<Grid>();
         string arg;
+        private Grid gridcopy;
+        
 
         public MainWindowForm(string arg)
         {
             InitializeComponent();
+
 
             StartPosition = FormStartPosition.CenterScreen;
 
@@ -44,8 +46,8 @@ namespace SudokuUI
             button9.Click += ButtonClick;
             buttonRemove.Click += ButtonClick;
 
-            ui_grid.SelectionChanged += new EventHandler(SelectionUpdate);
-            ui_grid.KeyPress += new KeyPressEventHandler(KeyPressEvent);
+            ui_grid.SelectionChanged += SelectionUpdate;
+            ui_grid.KeyPress += KeyPressEvent;
 
             this.arg = arg;
         }
@@ -143,15 +145,14 @@ namespace SudokuUI
                 Coords emptyCell = ui_grid.internal_grid.GetFirstEmptyCell();
 
                 // get all possibilities for the first empty cell
-                
                 List<int> possibilities = ui_grid.internal_grid.GetAllPossibilities(emptyCell);
-                
+
                 foreach (int item in possibilities) // try each possible number
                 {
                     ui_grid.SetCell(emptyCell, item);
 
-                    bool solutionFound = SolveRecursive(findAll); // if the next fuction call returns true (has found a solution)
-                    if (solutionFound && !findAll) // if only one solution should be found, return after one is found
+                    // if the next fuction call returns true (has found a solution) and the user wants to find just 1 solution, return
+                    if (SolveRecursive(findAll) && !findAll)
                     {
                         return true;
                     }
@@ -162,35 +163,57 @@ namespace SudokuUI
             }
         }
 
+        public bool SolveRecursiveSilent(bool findAll)
+        {
+            if (!gridcopy.ContainsZeros()) // if it is fully solved
+            {
+                possible_solutions.Add(gridcopy.Clone());
+                return true;
+            }
+            else
+            {
+                // find the first empty cell
+                Coords emptyCell = gridcopy.GetFirstEmptyCell();
+
+                // get all possibilities for the first empty cell
+                List<int> possibilities = gridcopy.GetAllPossibilities(emptyCell);
+
+                foreach (int item in possibilities) // try each possible number
+                {
+                    gridcopy.Set(emptyCell, item);
+
+                    // if the next fuction call returns true (has found a solution) and the user wants to find just 1 solution, return
+                    if (SolveRecursiveSilent(findAll) && !findAll)
+                    {
+                        return true;
+                    }
+                }
+                //backtrack
+                gridcopy.Set(emptyCell, 0);
+                return false;
+            }
+        }
+
         private void worker_solve_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             bool findAll = (bool)e.Argument;
             possible_solutions.Clear(); // reset the list of possible solutions
+            bool solveFast = (bool)Properties.Settings.Default["FastSolving"];
+            gridcopy = ui_grid.internal_grid.Clone();
 
-            if (findAll) // if the user wats to find all solutions
+            if (solveFast)
             {
-                SolveRecursive(true);
-                MessageBox.Show("Solutions found: "+ possible_solutions.Count);
-                if (possible_solutions.Count > 0)
-                {
-                    ui_grid.internal_grid = possible_solutions[0];
-                    ui_grid.UpdateGrid();
-                    SudokuViewer sv = new SudokuViewer(possible_solutions);
-                    sv.ShowDialog();
-                }
+                SolveRecursiveSilent(findAll);
             }
             else
             {
-                SolveRecursive(false);
-                if (possible_solutions.Count > 0)
-                {
-                    ui_grid.internal_grid = possible_solutions[0];
-                    ui_grid.UpdateGrid();
-                }
-                else
-                {
-                    MessageBox.Show("No solution was found.");
-                }
+                SolveRecursive(findAll);
+            }
+            MessageBox.Show("Solutions found: " + possible_solutions.Count);
+            if (possible_solutions.Count > 0)
+            {
+                SudokuViewer sv = new SudokuViewer(possible_solutions);
+                sv.ShowDialog();
             }
         }
 
@@ -246,52 +269,10 @@ namespace SudokuUI
                 ui_grid.LoadSudokuFile(arg);
             }
         }
-    }
 
-    public class UniquenessChecker
-    {
-        bool solutionFound = false;
-        bool secondSolFound = false;
-        Grid grid_to_check;
-        public bool Check(Grid grid)
+        private void exportAsImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            grid_to_check = grid.Clone();
-            CheckUniqueRecursive();
-            return (solutionFound && !secondSolFound);
-        }
-
-        private void CheckUniqueRecursive()
-        {
-            if (!secondSolFound)
-            {
-                if (!grid_to_check.ContainsZeros()) // if it is fully solved
-                {
-                    if (solutionFound)
-                    {
-                        secondSolFound = true;
-                        return;
-                    }
-                    solutionFound = true;
-                    return;
-                }
-                else
-                {
-                    // find the first empty cell
-                    Coords emptyCell = grid_to_check.GetFirstEmptyCell();
-
-                    // get all possibilities for the first empty cell
-                    List<int> possibilities = grid_to_check.GetAllPossibilities(emptyCell);
-
-                    foreach (int item in possibilities) // try each possible number
-                    {
-                        grid_to_check.Set(emptyCell, item);
-
-                        CheckUniqueRecursive(); // if the next fuction call returns true (has found a solution)
-                    }
-                    //backtrack
-                    grid_to_check.Set(emptyCell, 0);
-                }
-            }
+            ui_grid.OpenImageSaveDialog();
         }
     }
 
@@ -299,8 +280,8 @@ namespace SudokuUI
     {
         public Grid internal_grid;
 
-        public static Font font_cell_default = new Font("Verdana", 9f);
-        public static Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
+        public static readonly Font font_cell_default = new Font("Verdana", 9f);
+        public static readonly Font font_cell_bold = new Font("Verdana", 9f, FontStyle.Bold);
 
         public UIgrid()
         {
@@ -312,9 +293,6 @@ namespace SudokuUI
             DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             GridColor = Color.Black;
             Font = font_cell_default;
-            
-            // apply background pattern
-            //SetColorsDefault();
         }
 
         protected override void OnKeyDown(KeyEventArgs e) // just to avoid the standard behavior of keys like enter, tab and back
@@ -357,8 +335,18 @@ namespace SudokuUI
             }
             catch (Exception)
             {
-                MessageBox.Show(this.ColumnCount + ", " + this.RowCount);
+                MessageBox.Show(ColumnCount + ", " + RowCount);
             }
+        }
+
+        public void ExportImage(string path)
+        {
+            Bitmap bitmap = new Bitmap(Width, Height);
+            Rectangle rect = new Rectangle(0, 0, Width, Height);
+            CurrentCell = null;
+            SetColorsDefault();
+            DrawToBitmap(bitmap, rect);
+            bitmap.Save(path);
         }
 
         private void MarkPremade(Coords coords, bool isPremade)
@@ -404,13 +392,14 @@ namespace SudokuUI
 
         public void UpdateHighlightColors()
         {
-            if (!(bool)Properties.Settings.Default["ColorHelpEnabled"])
-            {
-                SetColorsDefault();
-                return;
-            }
             //set all colors to normal
             SetColorsDefault();
+
+            if (!(bool)Properties.Settings.Default["ColorHelpEnabled"])
+            {
+                return;
+            }
+
             //set all numbers that are the same as the selected one to e.g. blue
             int selectedNum = Math.Abs(internal_grid.Get(CurrentCellCoords()));
             if (selectedNum != 0)
@@ -470,11 +459,33 @@ namespace SudokuUI
             UpdateHighlightColors();
         }
 
+        public void OpenImageSaveDialog()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            saveFileDialog.Filter = "PNG files (*.png)|*.png|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 0;
+            saveFileDialog.RestoreDirectory = false;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    ExportImage(saveFileDialog.FileName);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error: " + e.Message, "An error has occured");
+                }
+            }
+        }
+
         public void OpenSaveDialog(Grid grid)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            saveFileDialog.InitialDirectory = Application.StartupPath;
+            saveFileDialog.InitialDirectory = Application.StartupPath + "\\Saved sudokus";
             saveFileDialog.Filter = "sudoku files (*.sudoku)|*.sudoku|All files (*.*)|*.*";
             saveFileDialog.FilterIndex = 0;
             saveFileDialog.RestoreDirectory = false;
@@ -506,7 +517,7 @@ namespace SudokuUI
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = Application.StartupPath;
+                openFileDialog.InitialDirectory = Application.StartupPath + "\\Saved sudokus";
                 openFileDialog.Filter = "sudoku files (*.sudoku)|*.sudoku|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 0;
                 openFileDialog.RestoreDirectory = false;
@@ -536,6 +547,55 @@ namespace SudokuUI
             internal_grid = deserialized_grid;
             UpdateGrid();
             UpdateHighlightColors();
+        }
+    }
+
+    public class UniquenessChecker
+    {
+        bool solutionFound = false;
+        bool secondSolFound = false;
+        Grid grid_to_check;
+        public bool Check(Grid grid)
+        {
+            grid_to_check = grid.Clone();
+            CheckUniqueRecursive();
+            return (solutionFound && !secondSolFound);
+        }
+
+        private void CheckUniqueRecursive()
+        {
+            if (secondSolFound)
+            {
+                return;
+            }
+
+            if (!grid_to_check.ContainsZeros()) // if it is fully solved
+            {
+                if (solutionFound)
+                {
+                    secondSolFound = true;
+                    return;
+                }
+                solutionFound = true;
+                return;
+            }
+            else
+            {
+                // find the first empty cell
+                Coords emptyCell = grid_to_check.GetFirstEmptyCell();
+
+                // get all possibilities for the first empty cell
+                List<int> possibilities = grid_to_check.GetAllPossibilities(emptyCell);
+
+                foreach (int item in possibilities) // try each possible number
+                {
+                    grid_to_check.Set(emptyCell, item);
+
+                    CheckUniqueRecursive(); // if the next fuction call returns true (has found a solution)
+                }
+                //backtrack
+                grid_to_check.Set(emptyCell, 0);
+            }
         }
     }
 }

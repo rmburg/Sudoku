@@ -47,6 +47,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSudokuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSudokuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportAsImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearGridToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.leavePremadeNumbersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -276,7 +277,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadSudokuToolStripMenuItem,
-            this.saveSudokuToolStripMenuItem});
+            this.saveSudokuToolStripMenuItem,
+            this.exportAsImageToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -289,7 +291,7 @@
             this.loadSudokuToolStripMenuItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.loadSudokuToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.loadSudokuToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.loadSudokuToolStripMenuItem.Size = new System.Drawing.Size(195, 30);
+            this.loadSudokuToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
             this.loadSudokuToolStripMenuItem.Text = "Load sudoku";
             this.loadSudokuToolStripMenuItem.Click += new System.EventHandler(this.loadSudokuToolStripMenuItem_Click);
             // 
@@ -300,9 +302,19 @@
             this.saveSudokuToolStripMenuItem.Name = "saveSudokuToolStripMenuItem";
             this.saveSudokuToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.saveSudokuToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveSudokuToolStripMenuItem.Size = new System.Drawing.Size(195, 30);
+            this.saveSudokuToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
             this.saveSudokuToolStripMenuItem.Text = "Save sudoku";
             this.saveSudokuToolStripMenuItem.Click += new System.EventHandler(this.saveSudokuToolStripMenuItem_Click);
+            // 
+            // exportAsImageToolStripMenuItem
+            // 
+            this.exportAsImageToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exportAsImageToolStripMenuItem.Image")));
+            this.exportAsImageToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.exportAsImageToolStripMenuItem.Name = "exportAsImageToolStripMenuItem";
+            this.exportAsImageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.exportAsImageToolStripMenuItem.Size = new System.Drawing.Size(208, 30);
+            this.exportAsImageToolStripMenuItem.Text = "Export as image";
+            this.exportAsImageToolStripMenuItem.Click += new System.EventHandler(this.exportAsImageToolStripMenuItem_Click);
             // 
             // actionsToolStripMenuItem
             // 
@@ -321,7 +333,7 @@
             this.clearGridToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("clearGridToolStripMenuItem1.Image")));
             this.clearGridToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.clearGridToolStripMenuItem1.Name = "clearGridToolStripMenuItem1";
-            this.clearGridToolStripMenuItem1.Size = new System.Drawing.Size(134, 30);
+            this.clearGridToolStripMenuItem1.Size = new System.Drawing.Size(188, 30);
             this.clearGridToolStripMenuItem1.Text = "Clear grid";
             // 
             // leavePremadeNumbersToolStripMenuItem
@@ -350,7 +362,7 @@
             this.solveGridToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("solveGridToolStripMenuItem.Image")));
             this.solveGridToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.solveGridToolStripMenuItem.Name = "solveGridToolStripMenuItem";
-            this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(134, 30);
+            this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
             this.solveGridToolStripMenuItem.Text = "Solve grid";
             // 
             // findOneSolutionToolStripMenuItem
@@ -580,6 +592,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportAsImageToolStripMenuItem;
     }
 }
 

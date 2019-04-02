@@ -34,5 +34,17 @@ namespace SudokuUI.Properties {
                 this["ColorHelpEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FastSolving {
+            get {
+                return ((bool)(this["FastSolving"]));
+            }
+            set {
+                this["FastSolving"] = value;
+            }
+        }
     }
 }

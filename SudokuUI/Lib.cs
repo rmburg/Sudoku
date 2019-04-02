@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace SudokuUI
 {
-    class Lib
+    static class Lib
     {
         public static List<E> Shuffle<E>(List<E> inputList)
         {

@@ -14,7 +14,9 @@ namespace SudokuUI
     {
         public SettingsMenu()
         {
-            InitializeComponent(); checkBox_ColorHelp.Checked = (bool)Properties.Settings.Default["ColorHelpEnabled"];
+            InitializeComponent();
+            checkBox_ColorHelp.Checked = (bool)Properties.Settings.Default["ColorHelpEnabled"];
+            radioButtonSolveFast.Checked = (bool)Properties.Settings.Default["FastSolving"];
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)
@@ -25,6 +27,7 @@ namespace SudokuUI
         private void button_SaveSettings_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default["ColorHelpEnabled"] = checkBox_ColorHelp.Checked;
+            Properties.Settings.Default["FastSolving"] = radioButtonSolveFast.Checked;
             Properties.Settings.Default.Save();
             MessageBox.Show("Settings saved.");
             Close();
