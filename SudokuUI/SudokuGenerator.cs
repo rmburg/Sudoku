@@ -13,8 +13,9 @@ namespace SudokuUI
         public Grid temp_grid;
         public List<Grid> possible_solutions;
         bool filled;
+        MainWindowForm Parent_form;
 
-        public SudokuGenerator()
+        public SudokuGenerator(MainWindowForm Parent)
         {
             InitializeComponent();
 
@@ -40,6 +41,7 @@ namespace SudokuUI
 
             // apply background pattern
             ui_grid.SetColorsDefault();
+            Parent_form = Parent;
         }
 
         private void buttonGenSolution_Click(object sender, EventArgs e)
@@ -65,6 +67,7 @@ namespace SudokuUI
             listBox1.Enabled = false;
             buttonGenSolution.Enabled = false;
             buttonSave.Enabled = false;
+            button_OpenInMainWindow.Enabled = false;
         }
 
         private void bgW_GenSolution_DoWork(object sender, DoWorkEventArgs e)
@@ -221,7 +224,12 @@ namespace SudokuUI
             progressBar1.Value = 0;
             buttonSave.Enabled = true;
             buttonGenSolution.Enabled = true;
-            buttonSave.Enabled = true;
+            button_OpenInMainWindow.Enabled = true;
+        }
+
+        private void button_OpenInMainWindow_Click(object sender, EventArgs e)
+        {
+            Parent_form.ui_grid.SetGrid(ui_grid.internal_grid);
         }
     }
 }

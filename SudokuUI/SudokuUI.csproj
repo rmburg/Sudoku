@@ -55,6 +55,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,6 +75,7 @@
       <DependentUpon>AboutPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Lib.cs" />
+    <Compile Include="PdfConvert.cs" />
     <Compile Include="SettingsMenu.cs">
       <SubType>Form</SubType>
     </Compile>

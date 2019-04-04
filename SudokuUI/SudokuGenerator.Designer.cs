@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SudokuGenerator));
             this.buttonGenSolution = new System.Windows.Forms.Button();
             this.buttonGenPuzzle = new System.Windows.Forms.Button();
@@ -46,6 +47,7 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button_OpenInMainWindow = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ui_grid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,14 +131,24 @@
             this.Column7,
             this.Column8,
             this.Column9});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 9F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ui_grid.DefaultCellStyle = dataGridViewCellStyle1;
             this.ui_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.ui_grid.Font = new System.Drawing.Font("Verdana", 9F);
+            this.ui_grid.GridColor = System.Drawing.Color.Black;
             this.ui_grid.Location = new System.Drawing.Point(12, 12);
             this.ui_grid.MultiSelect = false;
             this.ui_grid.Name = "ui_grid";
             this.ui_grid.ReadOnly = true;
             this.ui_grid.RowHeadersVisible = false;
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(1);
-            this.ui_grid.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(1);
+            this.ui_grid.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.ui_grid.RowTemplate.Height = 30;
             this.ui_grid.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.ui_grid.Size = new System.Drawing.Size(273, 273);
@@ -240,12 +252,24 @@
             this.Column9.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column9.Width = 30;
             // 
+            // button_OpenInMainWindow
+            // 
+            this.button_OpenInMainWindow.Enabled = false;
+            this.button_OpenInMainWindow.Location = new System.Drawing.Point(333, 203);
+            this.button_OpenInMainWindow.Name = "button_OpenInMainWindow";
+            this.button_OpenInMainWindow.Size = new System.Drawing.Size(125, 23);
+            this.button_OpenInMainWindow.TabIndex = 2;
+            this.button_OpenInMainWindow.Text = "Open in main window";
+            this.button_OpenInMainWindow.UseVisualStyleBackColor = true;
+            this.button_OpenInMainWindow.Click += new System.EventHandler(this.button_OpenInMainWindow_Click);
+            // 
             // SudokuGenerator
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(498, 297);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.button_OpenInMainWindow);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonGenPuzzle);
             this.Controls.Add(this.buttonGenSolution);
@@ -278,5 +302,6 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button button_OpenInMainWindow;
     }
 }

@@ -128,7 +128,7 @@ namespace SudokuUI
 
         private void generateASudokuToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SudokuGenerator sg = new SudokuGenerator();
+            SudokuGenerator sg = new SudokuGenerator(this);
             sg.Show();
         }
 
@@ -544,7 +544,12 @@ namespace SudokuUI
         public void LoadSudokuFile(string path)
         {
             Grid deserialized_grid = new Grid(JsonConvert.DeserializeObject<int[][]>(File.ReadAllText(path)), 9);
-            internal_grid = deserialized_grid;
+            SetGrid(deserialized_grid);
+        }
+
+        public void SetGrid(Grid grid)
+        {
+            internal_grid = grid;
             UpdateGrid();
             UpdateHighlightColors();
         }
