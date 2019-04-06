@@ -333,7 +333,7 @@
             this.clearGridToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("clearGridToolStripMenuItem1.Image")));
             this.clearGridToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.clearGridToolStripMenuItem1.Name = "clearGridToolStripMenuItem1";
-            this.clearGridToolStripMenuItem1.Size = new System.Drawing.Size(188, 30);
+            this.clearGridToolStripMenuItem1.Size = new System.Drawing.Size(134, 30);
             this.clearGridToolStripMenuItem1.Text = "Clear grid";
             // 
             // leavePremadeNumbersToolStripMenuItem
@@ -362,7 +362,7 @@
             this.solveGridToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("solveGridToolStripMenuItem.Image")));
             this.solveGridToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.solveGridToolStripMenuItem.Name = "solveGridToolStripMenuItem";
-            this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
+            this.solveGridToolStripMenuItem.Size = new System.Drawing.Size(134, 30);
             this.solveGridToolStripMenuItem.Text = "Solve grid";
             // 
             // findOneSolutionToolStripMenuItem
@@ -468,6 +468,7 @@
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.Location = new System.Drawing.Point(59, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(35, 35);

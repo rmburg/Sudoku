@@ -68,6 +68,7 @@ namespace SudokuUI
             buttonGenSolution.Enabled = false;
             buttonSave.Enabled = false;
             button_OpenInMainWindow.Enabled = false;
+            button_ExportImage.Enabled = false;
         }
 
         private void bgW_GenSolution_DoWork(object sender, DoWorkEventArgs e)
@@ -225,11 +226,17 @@ namespace SudokuUI
             buttonSave.Enabled = true;
             buttonGenSolution.Enabled = true;
             button_OpenInMainWindow.Enabled = true;
+            button_ExportImage.Enabled = true;
         }
 
         private void button_OpenInMainWindow_Click(object sender, EventArgs e)
         {
             Parent_form.ui_grid.SetGrid(ui_grid.internal_grid);
+        }
+
+        private void button_ExportImage_Click(object sender, EventArgs e)
+        {
+            ui_grid.OpenImageSaveDialog();
         }
     }
 }

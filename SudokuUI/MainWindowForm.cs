@@ -132,7 +132,7 @@ namespace SudokuUI
             sg.Show();
         }
 
-        public bool SolveRecursive(bool findAll)
+        private bool SolveRecursive(bool findAll)
         {
             if (!ui_grid.internal_grid.ContainsZeros()) // if it is fully solved
             {
@@ -163,7 +163,7 @@ namespace SudokuUI
             }
         }
 
-        public bool SolveRecursiveSilent(bool findAll)
+        private bool SolveRecursiveSilent(bool findAll)
         {
             if (!gridcopy.ContainsZeros()) // if it is fully solved
             {
@@ -564,7 +564,7 @@ namespace SudokuUI
         {
             grid_to_check = grid.Clone();
             CheckUniqueRecursive();
-            return (solutionFound && !secondSolFound);
+            return (solutionFound && !secondSolFound); // returns true only if there is exactly one solution to the given grid
         }
 
         private void CheckUniqueRecursive()
