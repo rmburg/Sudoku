@@ -1,6 +1,10 @@
 # Sudoku
 
-A program made just for fun within ~10 days using C# and Windows Forms.
+A program made just for fun using C# and Windows Forms.
+
+## Download
+
+Download the latest version [here](https://github.com/DaMightyZombie/Sudoku/releases/latest).
 
 ## Features
 -  Play sudokus
@@ -15,7 +19,3 @@ A program made just for fun within ~10 days using C# and Windows Forms.
   
 -  Save/load sudokus to/from a file
     -  "open with..."-feature supported
-
-## Download
-
-Download the latest version [here](https://github.com/DaMightyZombie/Sudoku/releases/latest).
