@@ -75,7 +75,6 @@
       <DependentUpon>AboutPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Lib.cs" />
-    <Compile Include="PdfConvert.cs" />
     <Compile Include="SettingsMenu.cs">
       <SubType>Form</SubType>
     </Compile>
