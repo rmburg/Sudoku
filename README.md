@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DaMightyZombie/Sudoku.svg?branch=master)](https://travis-ci.org/DaMightyZombie/Sudoku)
+
 # Sudoku
 
 A program made just for fun using C# and Windows Forms.
