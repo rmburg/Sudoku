@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Sudoku;
 
 namespace SudokuUI
 {
@@ -96,7 +95,7 @@ namespace SudokuUI
             else
             {
                 // find the first empty cell
-                Coords emptyCell = ui_grid.internal_grid.GetFirstEmptyCell();
+                Point emptyCell = ui_grid.internal_grid.GetFirstEmptyCell();
 
                 // get all possibilities for (x, y)
                 List<int> possibilities = Lib.Shuffle(ui_grid.internal_grid.GetAllPossibilities(emptyCell));
@@ -123,12 +122,12 @@ namespace SudokuUI
                 return;
             }
             temp_grid = ui_grid.internal_grid.Clone();
-            List<Coords> cells = new List<Coords>();
+            List<Point> cells = new List<Point>();
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    cells.Add(new Coords(i, j));
+                    cells.Add(new Point(i, j));
                 }
             }
             cells = Lib.Shuffle(cells);
@@ -136,7 +135,7 @@ namespace SudokuUI
             {
                 UniquenessChecker uc = new UniquenessChecker();
                 int removedCellvalue = temp_grid.Get(cells[0]);
-                Coords removedCell = cells[0];
+                Point removedCell = cells[0];
                 temp_grid.Set(cells[0], 0);
                 cells.RemoveAt(0);
                 if (!uc.Check(temp_grid))
@@ -146,14 +145,14 @@ namespace SudokuUI
                 bgW_GenSolution.ReportProgress((81 - cells.Count) * 100 / 81);
             }
 
-            List<Coords> emptyCells = new List<Coords>();
+            List<Point> emptyCells = new List<Point>();
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
                     if (temp_grid.Get(i, j) == 0)
                     {
-                        emptyCells.Add(new Coords(i, j));
+                        emptyCells.Add(new Point(i, j));
                     }
                 }
             }
@@ -208,8 +207,8 @@ namespace SudokuUI
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    Coords coords = new Coords(i, j);
-                    output.Set(coords, -Math.Abs(output.Get(coords)));
+                    Point Point = new Point(i, j);
+                    output.Set(Point, -Math.Abs(output.Get(Point)));
                 }
             }
             return output;
