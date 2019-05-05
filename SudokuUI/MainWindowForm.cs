@@ -216,6 +216,11 @@ namespace SudokuUI
 
         private void findOneSolutionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (worker_solve.IsBusy)
+            {
+                MessageBox.Show("Solver is already running.");
+                return;
+            }
             DialogResult result = MessageBox.Show("Are you sure? This will solve the grid. If you entered any wrong numbers, no solution may be possible.", "Please confirm", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
@@ -225,6 +230,11 @@ namespace SudokuUI
 
         private void findAllSolutionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (worker_solve.IsBusy)
+            {
+                MessageBox.Show("Solver is already running.");
+                return;
+            }
             DialogResult result = MessageBox.Show("Are you sure? This will solve the grid. If you entered any wrong numbers, no solution may be possible.", "Please confirm", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
