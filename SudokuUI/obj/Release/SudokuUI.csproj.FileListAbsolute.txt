@@ -15,3 +15,4 @@ C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.SudokuGenera
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.SettingsMenu.resources
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.AboutPage.resources
 C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.SudokuViewer.resources
+C:\Users\Rasmus\source\repos\SudokuUI\SudokuUI\obj\Release\SudokuUI.csprojAssemblyReference.cache

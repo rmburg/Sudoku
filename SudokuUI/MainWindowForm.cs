@@ -8,8 +8,8 @@ namespace SudokuUI
 {
     public partial class MainWindowForm : Form
     {
-        List<Grid> possible_solutions = new List<Grid>();
-        string arg;
+        private List<Grid> possible_solutions = new List<Grid>();
+        private readonly string arg;
         private Grid gridcopy;
         
 
