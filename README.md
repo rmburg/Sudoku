@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/DaMightyZombie/Sudoku.svg?branch=master)](https://travis-ci.org/DaMightyZombie/Sudoku)
-
 ![img](https://repository-images.githubusercontent.com/172972531/fbd35800-6f41-11e9-8bc6-0da178cb0fb2)
+
+[![Build Status](https://travis-ci.org/DaMightyZombie/Sudoku.svg?branch=master)](https://travis-ci.org/DaMightyZombie/Sudoku)
 
 # Sudoku
 
